@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ActivePage, ProjectItem } from '../../types';
 import { PRODUCT_CATEGORIES, PROJECTS_EXPERIENCE } from '../../data/companyData';
-import { ArrowRight, ArrowUpRight, Check, Maximize2, Phone } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, Maximize2, Phone } from 'lucide-react';
 
 // Reuses the facility photo already used on the home hero
 const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
@@ -17,6 +17,7 @@ interface ProductsViewProps {
 export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectProject }) => {
   const reduce = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
 
   const filteredCategories =
     selectedCategory === 'all'
@@ -194,10 +195,12 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
             </span>
           </div>
 
-          <div key={selectedCategory} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div key={selectedCategory} className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
             {filteredCategories.map((cat, idx) => {
               const relatedProjects = getProjectsForCategory(cat.title);
               const number = String(PRODUCT_CATEGORIES.findIndex((c) => c.id === cat.id) + 1).padStart(2, '0');
+              const isExpanded = expandedProduct === cat.id;
+              const detailsId = `product-details-${cat.id}`;
 
               return (
                 <motion.article
@@ -205,7 +208,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                   initial={reduce ? false : { opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: Math.min(idx, 5) * 0.07, ease: EASE }}
-                  className="group relative flex flex-col overflow-hidden border border-neutral-200 bg-white transition-shadow duration-500 hover:shadow-[0_30px_60px_-30px_rgba(0,0,0,0.35)]"
+                  className="group relative flex flex-col self-start overflow-hidden border border-neutral-200 bg-white transition-[border-color,box-shadow] duration-300 hover:border-neutral-300 hover:shadow-[0_18px_40px_-28px_rgba(0,0,0,0.3)]"
                 >
                   {/* red top edge reveals on hover */}
                   <span className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
@@ -213,14 +216,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                   {/* big ghost number */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute -right-2 -top-5 select-none text-[8rem] font-black leading-none text-neutral-100 transition-colors duration-500 group-hover:text-red-50"
+                    className="pointer-events-none absolute right-4 top-3 select-none text-7xl font-black leading-none text-neutral-100 transition-colors duration-300 group-hover:text-red-50 sm:text-8xl"
                   >
                     {number}
                   </span>
 
-                  <div className="relative flex flex-1 flex-col gap-6 p-6 sm:p-8">
+                  <div className="relative flex flex-col gap-6 p-6 sm:p-8">
                     {/* Header */}
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex flex-wrap items-center gap-3">
                         <span className="bg-red-600 px-2.5 py-1 text-sm font-bold text-white">
                           Category {number}
@@ -231,84 +234,118 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                           </span>
                         )}
                       </div>
-                      <h3 className="max-w-[85%] text-2xl font-extrabold leading-tight tracking-tight text-neutral-900 sm:text-3xl">
+                      <h3 className="max-w-[82%] text-2xl font-extrabold leading-[1.15] tracking-tight text-neutral-900 sm:text-3xl">
                         {cat.title}
                       </h3>
-                      <p className="text-base leading-relaxed text-neutral-600">{cat.description}</p>
+                      <p className="max-w-[62ch] text-base leading-7 text-neutral-600">{cat.description}</p>
                     </div>
 
-                    {/* Materials */}
-                    {cat.typicalMaterials.length > 0 && (
-                      <div>
-                        <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">
-                          Materials in documented examples
-                        </h4>
-                        <ul className="flex flex-wrap gap-2">
-                          {cat.typicalMaterials.map((mat, i) => (
-                            <li
-                              key={i}
-                              className="border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm font-medium text-neutral-800"
-                            >
-                              {mat}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Examples */}
-                    {cat.examples.length > 0 && (
-                      <div>
-                        <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">
-                          Selected examples
-                        </h4>
-                        <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                          {cat.examples.map((ex, i) => (
-                            <li key={i} className="flex items-start gap-2.5 text-[15px] text-neutral-800">
-                              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-red-600 text-white">
-                                <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                              </span>
-                              <span>{ex}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Related projects */}
-                    {relatedProjects.length > 0 && (
-                      <div className="border-t border-neutral-200 pt-5">
-                        <h4 className="mb-3 text-sm font-semibold text-red-600">
-                          Documented project experience
-                        </h4>
-                        <div className="space-y-2">
-                          {relatedProjects.slice(0, 2).map((rp) => (
-                            <button
-                              key={rp.id}
-                              onClick={() => onSelectProject(rp)}
-                              className="group/p flex w-full items-center justify-between gap-3 border border-neutral-200 bg-neutral-50 px-4 py-3 text-left transition-colors hover:border-red-600 hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
-                            >
-                              <span className="truncate text-[15px] font-semibold text-neutral-900">
-                                {rp.title}
-                              </span>
-                              <Maximize2 className="h-4 w-4 shrink-0 text-neutral-400 transition-colors group-hover/p:text-red-600" />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* CTA */}
-                  <div className="relative border-t border-neutral-200 p-4 sm:px-8 sm:py-5">
                     <button
-                      onClick={() => onOpenRFQ(cat.title)}
-                      className="group/btn flex w-full items-center justify-between bg-neutral-900 px-5 py-4 text-base font-semibold text-white transition-colors hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                      type="button"
+                      aria-expanded={isExpanded}
+                      aria-controls={detailsId}
+                      onClick={() => setExpandedProduct(isExpanded ? null : cat.id)}
+                      className="group/details flex w-full items-center justify-between border-t border-neutral-200 pt-5 text-left text-sm font-semibold text-neutral-800 transition-colors hover:text-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-600"
                     >
-                      <span className="truncate pr-3">Enquire for {cat.title}</span>
-                      <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover/btn:translate-x-1" />
+                      <span>{isExpanded ? 'Hide Details' : 'View Details'}</span>
+                      <ChevronDown
+                        aria-hidden="true"
+                        className={`h-5 w-5 text-red-600 transition-transform duration-300 ${
+                          isExpanded ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
                   </div>
+
+                  <motion.div
+                    id={detailsId}
+                    aria-hidden={!isExpanded}
+                    inert={!isExpanded}
+                    initial={false}
+                    animate={{
+                      height: isExpanded ? 'auto' : 0,
+                      opacity: isExpanded ? 1 : 0,
+                    }}
+                    transition={{
+                      duration: reduce ? 0 : 0.3,
+                      ease: EASE,
+                    }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex flex-col gap-6 border-t border-neutral-200 p-6 sm:p-8">
+                      {/* Materials */}
+                      {cat.typicalMaterials.length > 0 && (
+                        <div className="border-t border-neutral-100 pt-5">
+                          <h4 className="mb-3 text-sm font-semibold text-neutral-500">
+                            Materials in documented examples
+                          </h4>
+                          <ul className="flex flex-wrap gap-2">
+                            {cat.typicalMaterials.map((mat, i) => (
+                              <li
+                                key={i}
+                                className="inline-flex min-h-8 items-center border border-neutral-200 bg-neutral-50 px-3 py-1 text-sm leading-5 font-medium text-neutral-800"
+                              >
+                                {mat}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Examples */}
+                      {cat.examples.length > 0 && (
+                        <div className="border-t border-neutral-100 pt-5">
+                          <h4 className="mb-3 text-sm font-semibold text-neutral-500">
+                            Selected examples
+                          </h4>
+                          <ul className="grid grid-cols-1 gap-x-5 gap-y-3 lg:grid-cols-2">
+                            {cat.examples.map((ex, i) => (
+                              <li key={i} className="flex items-start gap-2.5 text-[15px] leading-6 text-neutral-800">
+                                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-red-600 text-white">
+                                  <Check className="h-3 w-3" strokeWidth={3} />
+                                </span>
+                                <span>{ex}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Related projects */}
+                      {relatedProjects.length > 0 && (
+                        <div className="border-t border-neutral-200 pt-5">
+                          <h4 className="mb-3 text-sm font-semibold text-red-600">
+                            Documented project experience
+                          </h4>
+                          <div className="space-y-2">
+                            {relatedProjects.slice(0, 2).map((rp) => (
+                              <button
+                                key={rp.id}
+                                onClick={() => onSelectProject(rp)}
+                                className="group/p flex w-full items-center justify-between gap-3 border border-neutral-200 bg-neutral-50 px-4 py-3 text-left transition-colors hover:border-red-600 hover:bg-red-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+                              >
+                                <span className="truncate text-[15px] font-semibold text-neutral-900">
+                                  {rp.title}
+                                </span>
+                                <Maximize2 className="h-4 w-4 shrink-0 text-neutral-400 transition-colors group-hover/p:text-red-600" />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* CTA */}
+                      <div className="border-t border-neutral-200 pt-5">
+                        <button
+                          onClick={() => onOpenRFQ(cat.title)}
+                          className="group/btn flex min-h-14 w-full items-center justify-between bg-neutral-900 px-5 py-4 text-base font-semibold text-white transition-colors hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                        >
+                          <span className="truncate pr-3">Enquire for {cat.title}</span>
+                          <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover/btn:translate-x-1" />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
                 </motion.article>
               );
             })}
