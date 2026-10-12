@@ -92,66 +92,110 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   {
     id: 'pressure-vessels',
     title: 'Pressure Vessels',
-    description: 'Fabricated vessels engineered for demanding industrial, chemical, and process applications subjected to internal pressure.',
-    typicalMaterials: ['SA516 Gr. 70', 'SS304', 'IS2062'],
-    examples: ['Chemical Storage Vessels', 'Jacketed Reactors', 'Receiver Vessels', 'Process Autoclaves'],
-    applicableStandards: 'ASME Sec VIII / Industry Codes'
+    description: 'Saghai Engineering manufactures pressure vessels for chemical and process plant applications. Share your requirements and drawings to discuss a vessel built for your project.',
+    typicalMaterials: [
+      'SA516 (chemical storage vessel example)',
+      'SS304 (chemical plant vessel example)',
+    ],
+    examples: [
+      'Chemical Storage Vessel',
+      'Jacketed Vessel',
+      'Process Plant Vessel',
+      'SS304 Chemical Plant Vessel',
+      'Air Receiver Tanks',
+    ],
   },
   {
     id: 'storage-tanks',
     title: 'Storage Tanks',
-    description: 'Industrial storage and process-related tanks fabricated to rigorous volumetric and leak-tight specifications.',
-    typicalMaterials: ['Mild Steel', 'SS304 / SS316', 'IS2062 E250'],
-    examples: ['28,000 L Water Sprinkler Tanks', '50 KL Mobile Sprinkler Tanks', '20 KL & 32 KL Storage Tanks', 'Cone-Bottom Silos'],
-    applicableStandards: 'API 650 / IS Standards'
+    description: 'Saghai Engineering manufactures storage tanks for water treatment, water sprinkler and chemical storage applications, including tank and cone structures.',
+    typicalMaterials: [
+      'Mild steel (documented tank examples)',
+      'IS2062 E250 (50 KL sprinkler tank example)',
+    ],
+    examples: [
+      'Chemical Storage Tanks',
+      'Air Receiver Tanks',
+      'RO Water Treatment Tank',
+      'Water Sprinkler Tanks',
+      '28,000 L Water Sprinkler Tank',
+      '20 KL Tank and Cone Structure',
+      '32 KL Tank',
+      '50 KL Water Sprinkler Tank',
+      'Furnace Tank with Conveyor',
+    ],
   },
   {
     id: 'heat-exchangers',
     title: 'Heat Exchangers',
-    description: 'Custom-engineered fabricated products and shell assemblies designed for thermal transfer in process applications.',
-    typicalMaterials: ['Stainless Steel', 'Carbon Steel', 'Specialty Alloy Shells'],
-    examples: ['Shell and Tube Bodies', 'Channel Heads', 'Baffle Tube Bundles', 'Condenser Shells'],
-    applicableStandards: 'TEMA / Process Engineering Specs'
+    description: 'Saghai Engineering manufactures heat exchangers for industrial applications. Contact us with your drawings and requirements to discuss your project.',
+    typicalMaterials: [],
+    examples: [],
   },
   {
     id: 'earthmoving-components',
     title: 'Earthmoving Equipment Components',
-    description: 'Heavy-duty fabricated structural components engineered for extreme mechanical stress in construction and earthmoving equipment.',
-    typicalMaterials: ['High-Strength Structural Steel', 'Mild Steel (Heavy Plate)', 'IS2062'],
-    examples: ['Dozer Axle Housings (~3T)', 'Motor Grader Drawbars (4m, 22mm)', 'Drilling Chassis Frames', 'Track-Width Mine Ploughs'],
-    applicableStandards: 'OEM Heavy Equipment Tolerances'
+    description: 'Saghai Engineering fabricates earthmoving equipment components and spares for dozers, motor graders and drilling equipment.',
+    typicalMaterials: [
+      'Mild steel (selected equipment examples)',
+      '690QL (track width mine plough example)',
+    ],
+    examples: [
+      'Dozer Axle Housing',
+      'Motor Grader Drawbar',
+      'Dozer Blade',
+      'Front Axle for Motor Graders',
+      'C-Frame for Dozer',
+      'Chassis for Dozer',
+      'Drilling Chassis / Platform',
+      'Chassis for 605 Dozer',
+      'Track Width Mine Plough',
+    ],
   },
   {
     id: 'industrial-structures',
     title: 'Industrial Structures & Components',
-    description: 'Robust fabricated steel structures, equipment chassis, and specialized industrial load-bearing components.',
-    typicalMaterials: ['Structural Steel Sections', 'Plates up to 50mm', 'IS2062'],
-    examples: ['Heavy Base Frames', 'Cone Structures', 'Foundry Equipment Buckets', 'Lift Pallet Assemblies'],
-    applicableStandards: 'Structural Engineering Codes'
+    description: 'Saghai Engineering manufactures heavy structures and fabricated components for industrial equipment and applications.',
+    typicalMaterials: [
+      'Mild steel (selected structure examples)',
+      'IS2062 E410 (marine pivot structure example)',
+    ],
+    examples: [
+      'Heavy Structures',
+      'Foundry Equipment Bucket',
+      'Fabricated Gear Wheel',
+      'Equipment Supports',
+      'Lift Pallet Assembly',
+      'Trommel',
+      'Butterfly Valve Body',
+      'Marine Pivot Structure',
+    ],
   },
   {
     id: 'process-plant-components',
     title: 'Process Plant Components',
-    description: 'Corrosion-resistant and high-integrity components manufactured for chemical, textile, and industrial process plants.',
-    typicalMaterials: ['SS304', 'SS316', 'SA516 Carbon Steel'],
-    examples: ['SS304 Process Vessels (2m dia × 9m long)', 'Trommel Screens', 'Industrial Chutes & Hoppers', 'Ducting Sections'],
-    applicableStandards: 'Process Piping & Vessel Standards'
+    description: 'Saghai Engineering manufactures process plant components for chemical plants, textile industries and other process equipment applications.',
+    typicalMaterials: ['SS304 (chemical plant vessel example)'],
+    examples: [
+      'Chemical Plant Components',
+      'Textile Industry Components',
+      'Process Equipment Components',
+      'Industrial Components for Chemical and Process Plants',
+    ],
   },
   {
     id: 'sheet-metal-components',
     title: 'Sheet Metal Components',
-    description: 'Custom sheet metal components manufactured with precision cutting and controlled bending to exact customer tolerances.',
-    typicalMaterials: ['Mild Steel (0.7–20mm)', 'Stainless Steel', 'Aluminium'],
-    examples: ['Machine Enclosures', 'Precision Brackets', 'Control Panels', 'Perforated Screens'],
-    applicableStandards: 'Drawing Specific Tolerances'
+    description: 'Saghai Engineering manufactures custom sheet metal components to customer drawings and specifications.',
+    typicalMaterials: [],
+    examples: [],
   },
   {
     id: 'compression-dish-ends',
     title: 'Compression Dish Ends',
-    description: 'Formed end closures manufactured using hydraulic pressing for pressure vessels, storage tanks, and process equipment.',
-    typicalMaterials: ['SA516 Boiler Quality Steel', 'SS304', 'Carbon Steel'],
-    examples: ['Torispherical Dish Ends', 'Ellipsoidal Heads', 'Hemispherical Formed Ends', 'Flanged & Dished Heads'],
-    applicableStandards: 'Vessel Code Forming Radii'
+    description: 'Compression dish ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
+    typicalMaterials: [],
+    examples: [],
   }
 ];
 

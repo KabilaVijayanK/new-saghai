@@ -238,36 +238,42 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                     </div>
 
                     {/* Materials */}
-                    <div>
-                      <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">Typical materials</h4>
-                      <ul className="flex flex-wrap gap-2">
-                        {cat.typicalMaterials.map((mat, i) => (
-                          <li
-                            key={i}
-                            className="border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm font-medium text-neutral-800"
-                          >
-                            {mat}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {cat.typicalMaterials.length > 0 && (
+                      <div>
+                        <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">
+                          Materials in documented examples
+                        </h4>
+                        <ul className="flex flex-wrap gap-2">
+                          {cat.typicalMaterials.map((mat, i) => (
+                            <li
+                              key={i}
+                              className="border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm font-medium text-neutral-800"
+                            >
+                              {mat}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     {/* Examples */}
-                    <div>
-                      <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">
-                        Manufactured components and examples
-                      </h4>
-                      <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                        {cat.examples.map((ex, i) => (
-                          <li key={i} className="flex items-start gap-2.5 text-[15px] text-neutral-800">
-                            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-red-600 text-white">
-                              <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                            </span>
-                            <span>{ex}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {cat.examples.length > 0 && (
+                      <div>
+                        <h4 className="mb-2.5 text-sm font-semibold text-neutral-500">
+                          Selected examples
+                        </h4>
+                        <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                          {cat.examples.map((ex, i) => (
+                            <li key={i} className="flex items-start gap-2.5 text-[15px] text-neutral-800">
+                              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center bg-red-600 text-white">
+                                <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                              </span>
+                              <span>{ex}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     {/* Related projects */}
                     {relatedProjects.length > 0 && (
