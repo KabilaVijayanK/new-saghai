@@ -1,0 +1,1280 @@
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  motion,
+  AnimatePresence,
+  animate,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from 'framer-motion';
+import { ActivePage, ProjectItem } from '../../types';
+import {
+  APPROVED_CUSTOMERS,
+  PRODUCT_CATEGORIES,
+  WHY_CHOOSE_US,
+  PROJECTS_EXPERIENCE,
+  FAQ_LIST,
+} from '../../data/companyData';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronDown,
+  Maximize2,
+  Phone,
+  Mail,
+  Flame,
+  Hammer,
+  Zap,
+  Ruler,
+  Paintbrush,
+  ScanSearch,
+  Cog,
+  ClipboardCheck,
+  Layers,
+  CalendarCheck,
+} from 'lucide-react';
+import { PlateCalculator } from '../common/PlateCalculator';
+
+// Local images
+const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
+const LASER_IMG = '/src/assets/images/capability_laser_cutting_1791778023419.jpg';
+const BENDING_IMG = '/src/assets/images/capability_plate_bending_1791778038932.jpg';
+const VESSEL_IMG = '/src/assets/images/project_pressure_vessel_1791778050554.jpg';
+
+interface HomeViewProps {
+  onNavigate: (page: ActivePage) => void;
+  onOpenRFQ: (initialCategory?: string) => void;
+  onSelectProject: (project: ProjectItem) => void;
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion helpers                                                      */
+/* ------------------------------------------------------------------ */
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Fade + rise when a block scrolls into view. Skipped for reduced motion. */
+const Reveal: React.FC<{
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}> = ({ children, delay = 0, className }) => {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduce ? false : { opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const staggerParent: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+const staggerChild: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+};
+
+/** Counts up to a number when visible. */
+const CountUp: React.FC<{ to: number; suffix?: string; format?: boolean }> = ({
+  to,
+  suffix = '',
+  format = false,
+}) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const reduce = useReducedMotion();
+  const [val, setVal] = useState(reduce ? to : 0);
+
+  useEffect(() => {
+    if (!inView || reduce) return;
+    const controls = animate(0, to, {
+      duration: 1.6,
+      ease: EASE,
+      onUpdate: (v) => setVal(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, to, reduce]);
+
+  return (
+    <span ref={ref}>
+      {format ? val.toLocaleString('en-IN') : val}
+      {suffix}
+    </span>
+  );
+};
+
+/** Section heading block: small label, big title, optional intro. */
+const SectionHead: React.FC<{
+  label: string;
+  title: string;
+  intro?: string;
+  light?: boolean;
+  center?: boolean;
+}> = ({ label, title, intro, light, center }) => (
+  <Reveal className={`max-w-3xl ${center ? 'mx-auto text-center' : ''}`}>
+    <div
+      className={`flex items-center gap-3 ${center ? 'justify-center' : ''} mb-4`}
+    >
+      <span className="h-[3px] w-10 bg-red-600" />
+      <span
+        className={`text-sm font-semibold tracking-wide ${
+          light ? 'text-red-400' : 'text-red-600'
+        }`}
+      >
+        {label}
+      </span>
+    </div>
+    <h2
+      className={`text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.1] ${
+        light ? 'text-white' : 'text-neutral-900'
+      }`}
+    >
+      {title}
+    </h2>
+    {intro && (
+      <p
+        className={`mt-5 text-base sm:text-lg leading-relaxed ${
+          light ? 'text-neutral-300' : 'text-neutral-600'
+        }`}
+      >
+        {intro}
+      </p>
+    )}
+  </Reveal>
+);
+
+const PrimaryBtn: React.FC<
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }
+> = ({ children, className = '', ...props }) => (
+  <button
+    {...props}
+    className={`group inline-flex items-center justify-center gap-2 bg-red-600 px-7 py-4 text-base font-semibold text-white transition-all duration-300 hover:bg-red-700 hover:shadow-[0_10px_30px_-10px_rgba(220,38,38,0.7)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 ${className}`}
+  >
+    {children}
+    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+  </button>
+);
+
+const GhostBtn: React.FC<
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { children: React.ReactNode; dark?: boolean }
+> = ({ children, dark, className = '', ...props }) => (
+  <button
+    {...props}
+    className={`group inline-flex items-center justify-center gap-2 border px-7 py-4 text-base font-semibold transition-all duration-300 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 ${
+      dark
+        ? 'border-white/25 text-white hover:border-white hover:bg-white/10'
+        : 'border-neutral-300 text-neutral-900 hover:border-neutral-900 hover:bg-neutral-900 hover:text-white'
+    } ${className}`}
+  >
+    {children}
+    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+  </button>
+);
+
+const capabilityIcons = [Hammer, Zap, Flame, Ruler, Cog, Paintbrush];
+
+/* ------------------------------------------------------------------ */
+/* Narrative hero + about story                                        */
+/* ------------------------------------------------------------------ */
+
+interface HeroProps {
+  onOpenRFQ: () => void;
+  onNavigate: (page: ActivePage) => void;
+}
+
+export const HeroNarrative: React.FC<HeroProps> = ({ onOpenRFQ, onNavigate }) => {
+  const reduce = useReducedMotion();
+
+  // Slow parallax on the background image
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['0%', '15%']);
+  const fade = useTransform(scrollYProgress, [0, 0.8], reduce ? [1, 1] : [1, 0.2]);
+
+  // Masked line-by-line headline reveal
+  const line = (i: number) => ({
+    initial: reduce ? false : { y: '110%' },
+    animate: { y: 0 },
+    transition: { duration: 0.9, delay: 0.2 + i * 0.12, ease: EASE },
+  });
+
+  const facts = [
+    { v: <>1978</>, l: 'Established' },
+    { v: <CountUp to={30000} suffix="+" format />, l: 'Sq. ft. facility' },
+    { v: <CountUp to={3} />, l: 'Fabrication bays' },
+    { v: <CountUp to={600} suffix=" t" />, l: 'Press capacity' },
+  ];
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-neutral-950 text-white"
+    >
+      {/* Background image with parallax */}
+      <motion.img
+        src={HERO_IMG}
+        alt=""
+        aria-hidden
+        referrerPolicy="no-referrer"
+        style={{ y: bgY }}
+        initial={reduce ? false : { scale: 1.12 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2, ease: EASE }}
+        className="absolute inset-x-0 -top-[5%] -z-20 h-[110%] w-full object-cover"
+      />
+
+      {/* Slight overlay: even dark tint + soft vignette for text contrast */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-neutral-950/60" />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-neutral-950/60 via-transparent to-neutral-950/80"
+      />
+      <div aria-hidden className="absolute left-0 top-0 -z-10 h-full w-1.5 bg-red-600" />
+
+      {/* Centered content */}
+      <motion.div
+        style={{ opacity: fade }}
+        className="relative mx-auto flex w-full max-w-[1500px] flex-1 -translate-y-4 flex-col items-center justify-center px-4 pb-44 pt-28 text-center sm:-translate-y-6 sm:px-6 sm:pb-52 lg:px-8"
+      >
+        {/* Eyebrow pill */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="inline-flex items-center gap-3 border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold backdrop-blur-md sm:text-base"
+        >
+          <span className="h-2.5 w-2.5 bg-red-500" />
+          Saghai Engineering, Coimbatore
+          <span className="h-4 w-px bg-white/30" />
+          <span className="text-red-300">Since 1978</span>
+        </motion.div>
+
+        {/* Stretched headline: fluid size, tight tracking, spans the width */}
+        <h1 className="mt-8 w-full font-black uppercase tracking-tighter [font-size:clamp(1.9rem,5.6vw,5.75rem)] leading-[1]">
+          <span className="block overflow-hidden pb-[0.06em]">
+            <motion.span className="block" {...line(0)}>
+              Every component
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden pb-[0.06em]">
+            <motion.span className="block" {...line(1)}>
+              starts as a drawing
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden pb-[0.1em]">
+            <motion.span className="block text-red-500" {...line(2)}>
+              We build it.
+            </motion.span>
+          </span>
+        </h1>
+
+        {/* Subcopy */}
+        <motion.p
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7, ease: EASE }}
+          className="mt-6 max-w-2xl text-base leading-relaxed text-neutral-100 sm:text-lg"
+        >
+          Custom-engineered products and fabricated components for heavy
+          engineering, process equipment, earthmoving and manufacturing, built
+          around your drawings and specifications.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
+          className="mt-10 flex w-full flex-col items-stretch justify-center gap-4 sm:w-auto sm:flex-row"
+        >
+          <button
+            onClick={onOpenRFQ}
+            className="group inline-flex items-center justify-center gap-2 bg-red-600 px-8 py-4 text-sm font-bold text-white transition-all duration-300 hover:bg-red-700 hover:shadow-[0_14px_40px_-10px_rgba(220,38,38,0.8)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-base"
+          >
+            Request a quote
+            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+          <button
+            onClick={() => onNavigate('products')}
+            className="group inline-flex items-center justify-center gap-2 border border-white/60 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-neutral-900 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:text-base"
+          >
+            Explore our products
+            <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </button>
+        </motion.div>
+      </motion.div>
+
+      {/* Facts strip pinned to the bottom of the hero */}
+      <motion.dl
+        initial={reduce ? false : { opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 1.1, ease: EASE }}
+        className="absolute inset-x-0 bottom-0 z-10 mx-auto grid max-w-6xl grid-cols-2 border-t-4 border-red-600 bg-white/95 text-neutral-900 shadow-[0_-20px_60px_-25px_rgba(0,0,0,0.5)] backdrop-blur-md lg:grid-cols-4"
+      >
+        {facts.map((f, i) => (
+          <div
+            key={f.l}
+            className={`px-4 py-5 text-center sm:py-7 ${i % 2 === 1 ? 'border-l border-neutral-200' : ''} ${
+              i >= 2 ? 'border-t border-neutral-200 lg:border-t-0' : ''
+            } ${i === 2 ? 'lg:border-l lg:border-neutral-200' : ''}`}
+          >
+            <dd className="text-xl font-extrabold tabular-nums tracking-tight sm:text-3xl">{f.v}</dd>
+            <dt className="mt-1 text-xs font-medium text-neutral-600 sm:text-sm">{f.l}</dt>
+          </div>
+        ))}
+      </motion.dl>
+    </section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 2. ABOUT — scroll story                                             */
+/*    Left side stays pinned with the year and a progress line; the    */
+/*    right side scrolls through four short chapters.                  */
+/* ------------------------------------------------------------------ */
+
+const CHAPTERS = [
+  {
+    kicker: 'The beginning',
+    title: 'A Coimbatore workshop, founded in 1978.',
+    text: 'Saghai Engineering was founded in Coimbatore in 1978 and grew through practical fabrication expertise.',
+  },
+  {
+    kicker: 'How we work',
+    title: 'We build to your drawing.',
+    text: 'Customer-focused engineering and a commitment to producing components according to specific drawings, dimensions and requirements.',
+  },
+  {
+    kicker: 'What we build',
+    title: 'From vessels to structures.',
+    text: 'Our experience covers a wide range of industrial work.',
+    chips: [
+      'Pressure vessels',
+      'Storage tanks',
+      'Heat exchangers',
+      'Earthmoving equipment components',
+      'Industrial structures',
+      'Process plant components',
+      'Sheet metal components',
+    ],
+  },
+  {
+    kicker: 'Today',
+    title: 'Decades of experience, one clear approach.',
+    text: 'A Coimbatore-based manufacturer of custom-engineered products and fabricated components for industrial applications.',
+    cta: true,
+  },
+];
+
+const Chapter: React.FC<{
+  c: (typeof CHAPTERS)[number];
+  index: number;
+  onVisible: (i: number) => void;
+  onNavigate: (page: ActivePage) => void;
+}> = ({ c, index, onVisible, onNavigate }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: '-45% 0px -45% 0px' });
+  const reduce = useReducedMotion();
+
+  useEffect(() => {
+    if (inView) onVisible(index);
+  }, [inView, index, onVisible]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={reduce ? false : { opacity: 0.25 }}
+      animate={{ opacity: inView ? 1 : 0.3 }}
+      transition={{ duration: 0.5 }}
+      className="flex min-h-[70vh] flex-col justify-center py-10"
+    >
+      <span className="text-base font-semibold text-red-600">{c.kicker}</span>
+      <h3 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-neutral-900 sm:text-4xl">
+        {c.title}
+      </h3>
+      <p className="mt-5 max-w-xl text-lg leading-relaxed text-neutral-700">{c.text}</p>
+
+      {c.chips && (
+        <motion.ul
+          initial="hidden"
+          animate={inView ? 'show' : 'hidden'}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
+          className="mt-6 flex max-w-xl flex-wrap gap-2.5"
+        >
+          {c.chips.map((chip) => (
+            <motion.li
+              key={chip}
+              variants={{
+                hidden: { opacity: 0, y: 12 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+              }}
+              className="border border-neutral-300 bg-white px-4 py-2 text-base font-medium text-neutral-800"
+            >
+              {chip}
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
+
+      {c.cta && (
+        <button
+          onClick={() => onNavigate('about')}
+          className="group mt-8 inline-flex w-fit items-center gap-2 bg-neutral-900 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+        >
+          Know more about Saghai
+          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+        </button>
+      )}
+    </motion.div>
+  );
+};
+
+export const AboutNarrative: React.FC<{ onNavigate: (page: ActivePage) => void }> = ({ onNavigate }) => {
+  const reduce = useReducedMotion();
+  const [current, setCurrent] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start 60%', 'end 60%'],
+  });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.4 });
+
+  return (
+    <section className="border-b border-neutral-200 bg-neutral-50">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 lg:py-24">
+        {/* Pinned side */}
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-28">
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-[3px] w-10 bg-red-600" />
+              <span className="text-base font-semibold text-red-600">About Saghai Engineering</span>
+            </div>
+            <h2 className="text-4xl font-extrabold leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl">
+              Engineering experience that understands fabrication.
+            </h2>
+
+            <div className="mt-8 flex items-stretch gap-6">
+              {/* Progress line */}
+              <div className="relative hidden w-[3px] shrink-0 bg-neutral-200 sm:block">
+                <motion.div
+                  style={{ scaleY: reduce ? 1 : progress }}
+                  className="absolute inset-0 origin-top bg-red-600"
+                />
+              </div>
+              <div>
+                <div className="text-7xl font-black tabular-nums leading-none text-neutral-900 sm:text-8xl">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={current === 3 ? 'today' : '1978'}
+                      initial={reduce ? false : { opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -16 }}
+                      transition={{ duration: 0.3 }}
+                      className="inline-block"
+                    >
+                      {current === 3 ? '5+' : '1978'}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+                <p className="mt-2 text-base font-semibold text-neutral-600">
+                  {current === 3 ? 'decades of manufacturing experience' : 'year Saghai Engineering was founded'}
+                </p>
+                <p className="mt-4 text-sm text-neutral-500">
+                  Chapter {current + 1} of {CHAPTERS.length}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scrolling chapters */}
+        <div ref={trackRef} className="lg:col-span-7">
+          {CHAPTERS.map((c, i) => (
+            <Chapter key={c.kicker} c={c} index={i} onVisible={setCurrent} onNavigate={onNavigate} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Page                                                                */
+/* ------------------------------------------------------------------ */
+
+export const HomeView: React.FC<HomeViewProps> = ({
+  onNavigate,
+  onOpenRFQ,
+  onSelectProject,
+}) => {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const reduce = useReducedMotion();
+
+  const toggleFaq = (idx: number) =>
+    setOpenFaqIndex(openFaqIndex === idx ? null : idx);
+
+  const handleCalculatorTransfer = (specDetails: string) => onOpenRFQ(specDetails);
+
+  const homeFeaturedProjects = PROJECTS_EXPERIENCE.slice(0, 6);
+
+  const capabilities = [
+    { title: 'Hydraulic pressing', value: 'Up to 600 tonnes', text: 'Deep forming, dishing and high-tonnage plate shaping.' },
+    { title: 'CNC laser cutting', value: '0.7 – 20 mm', text: 'Fibre laser cutting with clean, weld-ready edges in mild steel, SS and aluminium.' },
+    { title: 'CNC oxyfuel cutting', value: 'Up to 150 mm', text: 'Heavy thermal cutting for thick carbon steel plates and flanges.' },
+    { title: 'Plate bending', value: '3 – 50 mm', text: 'Customer-confirmed bending for heavy shells, structures and rolled segments.' },
+    { title: 'Welding processes', value: 'FCAW · GMAW · SMAW · GTAW', text: 'Certified procedures for pressure boundaries and structural joints.' },
+    { title: 'Blasting & painting', value: 'In-house', text: 'Grit / shot blasting and a protective coating booth on site.' },
+  ];
+
+  const partnershipPillars = [
+    {
+      icon: ClipboardCheck,
+      title: 'Direct engineering review',
+      text: 'Your drawings and specifications are reviewed directly by our engineers.',
+    },
+    {
+      icon: Layers,
+      title: 'Material traceability',
+      text: 'Materials documented and traceable through fabrication.',
+    },
+    {
+      icon: CalendarCheck,
+      title: 'On-schedule delivery',
+      text: 'Dependable manufacturing planned around your project timeline.',
+    },
+  ];
+
+  return (
+    <div className="bg-white text-neutral-900 antialiased selection:bg-red-600 selection:text-white">
+      {/* 1. NARRATIVE HERO */}
+      <HeroNarrative onOpenRFQ={() => onOpenRFQ()} onNavigate={onNavigate} />
+
+      {/* ======================= 2. COMPANY SNAPSHOT ====================== */}
+      <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <div className="space-y-6 lg:col-span-6">
+            <SectionHead
+              label="Engineering since 1978"
+              title="Decades of fabrication experience, built around customer requirements."
+            />
+            <Reveal delay={0.1}>
+              <p className="max-w-xl text-lg leading-relaxed text-neutral-700">
+                Established in 1978, Saghai Engineering has developed decades of
+                experience in metal fabrication and custom-engineered product
+                manufacturing. Our work covers pressure vessels and storage
+                tanks, earthmoving equipment components, industrial structures
+                and process-plant components.
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <button
+                onClick={() => onNavigate('about')}
+                className="group inline-flex items-center gap-2 text-base font-bold text-red-600 hover:text-red-700"
+              >
+                <span className="border-b-2 border-red-600/30 pb-0.5 transition-colors group-hover:border-red-700">
+                  Read Saghai Engineering's story
+                </span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </Reveal>
+          </div>
+
+          <motion.div
+            className="grid grid-cols-2 gap-4 lg:col-span-6"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {[
+              { n: <>1978</>, label: 'Established', text: 'Founded in Coimbatore with deep metal fabrication roots.' },
+              { n: <CountUp to={30000} suffix="+" format />, label: 'Sq. ft. covered area', text: 'Dedicated heavy manufacturing workshop space.' },
+              { n: <CountUp to={3} />, label: 'Fabrication bays', text: 'Segregated bays for cutting, forming, welding and assembly.' },
+              { n: <>5+ decades</>, label: 'Manufacturing experience', text: 'Operating continuously across demanding sectors.', accent: true },
+            ].map((s, i) => (
+              <motion.div
+                key={i}
+                variants={staggerChild}
+                whileHover={reduce ? undefined : { y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className={`border p-6 sm:p-8 ${
+                  s.accent
+                    ? 'border-red-600 bg-red-600 text-white'
+                    : 'border-neutral-200 bg-neutral-50 text-neutral-900'
+                }`}
+              >
+                <div className="text-4xl font-extrabold tabular-nums sm:text-5xl">{s.n}</div>
+                <div className={`mt-2 text-base font-semibold ${s.accent ? 'text-red-50' : 'text-neutral-800'}`}>
+                  {s.label}
+                </div>
+                <p className={`mt-2 text-sm leading-relaxed ${s.accent ? 'text-red-100' : 'text-neutral-600'}`}>
+                  {s.text}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 3. NARRATIVE ABOUT */}
+      <AboutNarrative onNavigate={onNavigate} />
+
+      {/* ========================== 4. SERVICES =========================== */}
+      <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <SectionHead
+              label="Core capabilities"
+              title="Focused fabrication services"
+              intro="Our core fabrication services focus on precision cutting and controlled plate forming for industrial components and custom fabrication requirements."
+            />
+            <Reveal>
+              <button
+                onClick={() => onNavigate('services')}
+                className="group inline-flex items-center gap-2 text-base font-bold text-neutral-900 hover:text-red-600"
+              >
+                Explore our services
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </Reveal>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {[
+              {
+                tag: 'Cutting',
+                range: '0.7 – 20 mm',
+                title: 'Precision CNC laser cutting',
+                text: 'CNC laser cutting for industrial components, fabricated parts and custom profiles from 0.7–20 mm thickness, with strict edge accuracy and minimal thermal distortion.',
+                img: LASER_IMG,
+                alt: 'Precision CNC laser cutting 0.7–20 mm at Saghai Engineering',
+                points: [
+                  'Profiles in mild steel, stainless steel and aluminium',
+                  'Clean edge perpendicularity, ready for welding',
+                ],
+                cta: 'Request laser cutting quote',
+                rfq: 'Laser Cutting',
+              },
+              {
+                tag: 'Forming',
+                range: '3 – 50 mm',
+                title: 'Industrial plate bending',
+                text: 'Controlled plate bending for fabricated components that need accurate geometry and forming, from 3–50 mm current customer-confirmed capability.',
+                img: BENDING_IMG,
+                alt: 'Industrial plate bending 3–50 mm at Saghai Engineering',
+                points: [
+                  'Customer-confirmed bending capability from 3 mm to 50 mm',
+                  'Cylindrical shell rolling and heavy structural section bending',
+                ],
+                cta: 'Request plate bending quote',
+                rfq: 'Plate Bending',
+              },
+            ].map((s, i) => (
+              <Reveal key={s.title} delay={i * 0.12}>
+                <article className="group flex h-full flex-col overflow-hidden border border-neutral-200 bg-white transition-shadow duration-500 hover:shadow-[0_30px_60px_-30px_rgba(0,0,0,0.35)]">
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={s.img}
+                      alt={s.alt}
+                      referrerPolicy="no-referrer"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent" />
+                    <span className="absolute left-4 top-4 bg-white px-3 py-1 text-sm font-semibold text-neutral-900">
+                      {s.tag}
+                    </span>
+                    <span className="absolute bottom-4 right-4 bg-red-600 px-3 py-1.5 text-base font-bold text-white">
+                      {s.range}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col justify-between gap-6 p-6 sm:p-8">
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-bold sm:text-3xl">{s.title}</h3>
+                      <p className="text-base leading-relaxed text-neutral-600">{s.text}</p>
+                      <ul className="space-y-2.5 pt-1 text-base text-neutral-700">
+                        {s.points.map((p) => (
+                          <li key={p} className="flex gap-3">
+                            <span className="mt-2 h-2 w-2 shrink-0 bg-red-600" />
+                            <span>{p}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <button
+                      onClick={() => onOpenRFQ(s.rfq)}
+                      className="group/btn flex w-full items-center justify-between bg-neutral-900 px-5 py-4 text-base font-semibold text-white transition-colors hover:bg-red-600"
+                    >
+                      {s.cta}
+                      <ArrowRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
+                    </button>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================= 5. PRODUCTS ============================ */}
+      <section className="border-b border-neutral-200 bg-neutral-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <SectionHead
+              label="Products and fabricated components"
+              title="Custom products for industrial applications"
+              intro="We manufacture a broad range of custom-engineered products and fabricated components based on your drawings, specifications and application requirements."
+            />
+            <Reveal>
+              <PrimaryBtn onClick={() => onNavigate('products')}>View all products</PrimaryBtn>
+            </Reveal>
+          </div>
+
+          <motion.div
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {PRODUCT_CATEGORIES.map((cat) => (
+              <motion.button
+                key={cat.id}
+                variants={staggerChild}
+                onClick={() => onNavigate('products')}
+                className="group relative flex flex-col justify-between overflow-hidden border border-neutral-200 bg-white p-6 text-left transition-colors duration-300 hover:border-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+              >
+                {/* sliding red edge */}
+                <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-xl font-bold leading-snug text-neutral-900 transition-colors group-hover:text-red-600">
+                      {cat.title}
+                    </h3>
+                    <ArrowUpRight className="h-5 w-5 shrink-0 text-neutral-400 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-red-600" />
+                  </div>
+                  <p className="text-sm leading-relaxed text-neutral-600">{cat.description}</p>
+                </div>
+                <div className="mt-5 border-t border-neutral-100 pt-4 text-sm">
+                  <span className="block text-neutral-500">Typical scope</span>
+                  <span className="font-semibold text-neutral-800">{cat.examples[0]}</span>
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ======================= 6. CAPABILITIES ========================== */}
+      <section className="relative overflow-hidden bg-neutral-950 py-20 text-white lg:py-28">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            backgroundSize: '56px 56px',
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
+          <SectionHead
+            light
+            label="Plant and machinery"
+            title="Manufacturing capability under one roof"
+            intro="Our facility combines cutting, forming, pressing, welding, finishing and inspection to support diverse custom fabrication requirements."
+          />
+
+          <motion.div
+            className="grid grid-cols-1 gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {capabilities.map((c, i) => {
+              const Icon = capabilityIcons[i];
+              return (
+                <motion.div
+                  key={c.title}
+                  variants={staggerChild}
+                  className="group space-y-4 bg-neutral-950 p-7 transition-colors duration-300 hover:bg-neutral-900"
+                >
+                  <div className="flex h-12 w-12 items-center justify-center border border-red-500/40 bg-red-600/10 text-red-400 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-neutral-400">{c.title}</div>
+                    <div className="mt-1 text-2xl font-bold leading-tight text-white">{c.value}</div>
+                  </div>
+                  <p className="text-base leading-relaxed text-neutral-300">{c.text}</p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          {/* Inspection banner */}
+          <Reveal>
+            <div className="flex flex-col items-start justify-between gap-6 border border-red-500/40 bg-gradient-to-r from-red-950/60 to-neutral-950 p-7 md:flex-row md:items-center md:p-10">
+              <div className="flex gap-5">
+                <div className="hidden h-14 w-14 shrink-0 items-center justify-center bg-red-600 sm:flex">
+                  <ScanSearch className="h-7 w-7" />
+                </div>
+                <div className="space-y-2">
+                  <span className="text-sm font-semibold text-red-300">
+                    Inspection and non-destructive testing
+                  </span>
+                  <p className="text-2xl font-bold">UT, LPT, radiography and hydrostatic testing</p>
+                  <p className="max-w-2xl text-base text-neutral-300">
+                    Quality testing that verifies internal weld soundness,
+                    surface integrity, pressure containment and dimensional
+                    adherence to drawings.
+                  </p>
+                </div>
+              </div>
+              <PrimaryBtn className="whitespace-nowrap" onClick={() => onNavigate('capabilities')}>
+                Full plant capabilities
+              </PrimaryBtn>
+            </div>
+          </Reveal>
+
+          {/* Plate estimator */}
+          <Reveal>
+            <div className="bg-white p-1 text-neutral-900">
+              <PlateCalculator onQuoteWithSpec={handleCalculatorTransfer} />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ========================== 7. WHY ================================ */}
+      <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
+          <SectionHead label="Our value" title="Why industrial buyers choose Saghai" />
+          <motion.div
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {WHY_CHOOSE_US.map((item) => (
+              <motion.div
+                key={item.number}
+                variants={staggerChild}
+                whileHover={reduce ? undefined : { y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className="relative overflow-hidden border border-neutral-200 bg-neutral-50 p-7"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -right-2 -top-4 select-none text-8xl font-black text-neutral-200/70"
+                >
+                  {item.number}
+                </span>
+                <div className="relative space-y-3">
+                  <h3 className="text-xl font-bold text-neutral-900">{item.title}</h3>
+                  <p className="text-base leading-relaxed text-neutral-600">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ======================== 8. CUSTOMERS ============================ */}
+      <section className="border-b border-neutral-200 bg-neutral-50 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <SectionHead
+              label="Customer relationships"
+              title="Trusted by industrial customers"
+              intro="Our project experience includes work for established industrial companies across engineering, manufacturing and equipment-related applications."
+            />
+            <Reveal>
+              <div className="flex w-fit items-center gap-4 border-l-4 border-red-600 bg-white py-3 pl-5 pr-8 shadow-sm">
+                <span className="text-5xl font-black tabular-nums text-neutral-900">
+                  <CountUp to={APPROVED_CUSTOMERS.length} />
+                </span>
+                <span className="text-sm font-semibold leading-tight text-neutral-600">
+                  Approved
+                  <br />
+                  customers
+                </span>
+              </div>
+            </Reveal>
+          </div>
+
+          <motion.div
+            className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-60px' }}
+          >
+            {APPROVED_CUSTOMERS.map((cust, i) => (
+              <motion.div
+                key={cust.name}
+                variants={staggerChild}
+                whileHover={reduce ? undefined : { y: -6 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className="group relative flex h-44 flex-col items-center justify-center gap-2 overflow-hidden border border-neutral-200 bg-white p-4 text-center transition-colors duration-300 hover:border-neutral-950 hover:bg-neutral-950"
+              >
+                <span className="absolute left-3 top-3 text-xs font-bold tabular-nums text-neutral-300 transition-colors group-hover:text-neutral-600">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="text-3xl font-black tracking-wide text-neutral-900 transition-colors duration-300 group-hover:text-red-500">
+                  {cust.code}
+                </span>
+                {cust.name !== cust.code && (
+                  <span className="text-sm leading-snug text-neutral-600 transition-colors group-hover:text-neutral-300">
+                    {cust.name}
+                  </span>
+                )}
+                <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ========================= 9. PROJECTS ============================ */}
+      <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <SectionHead
+              label="Documented shopfloor work"
+              title="From components to complete fabricated assemblies"
+              intro="Our project experience shows our ability to manufacture application-specific components and fabricated products across different industrial requirements."
+            />
+            <Reveal>
+              <GhostBtn onClick={() => onNavigate('projects')}>View project experience</GhostBtn>
+            </Reveal>
+          </div>
+
+          {/* Featured */}
+          <Reveal>
+            <div className="grid grid-cols-1 overflow-hidden border border-neutral-200 bg-white shadow-sm lg:grid-cols-12">
+              <div className="group relative min-h-[320px] overflow-hidden lg:col-span-5">
+                <img
+                  src={VESSEL_IMG}
+                  alt="SS304 and SA516 process pressure vessel fabricated at Saghai Engineering"
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span className="absolute left-4 top-4 bg-red-600 px-3 py-1.5 text-sm font-semibold text-white">
+                  Featured assembly
+                </span>
+              </div>
+              <div className="flex flex-col justify-between gap-8 p-6 sm:p-10 lg:col-span-7">
+                <div className="space-y-5">
+                  <div className="flex items-center gap-3 text-sm font-semibold">
+                    <span className="text-neutral-500">Vessels and tanks</span>
+                    <span className="h-1 w-1 bg-neutral-400" />
+                    <span className="text-red-600">SA516 / SS304</span>
+                  </div>
+                  <h3 className="text-2xl font-bold leading-tight sm:text-3xl">
+                    Chemical storage / jacketed vessel and SS304 process vessel
+                  </h3>
+                  <p className="text-base leading-relaxed text-neutral-600">
+                    Engineered with SA516 boiler-grade plate and SS304 stainless
+                    steel, weighing approximately 8 tonnes and spanning 2,000 mm
+                    diameter × 9,000 mm length for chemical processing
+                    installations. 100% inspected with ultrasonic testing and
+                    hydrostatic pressure validation.
+                  </p>
+                  <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3">
+                    {[
+                      ['Weight', '~8 tonnes'],
+                      ['Dimensions', 'Ø 2,000 × 9,000 mm'],
+                      ['Testing', 'UT and hydrostatic'],
+                    ].map(([k, v]) => (
+                      <div key={k} className="border-l-4 border-red-600 bg-neutral-50 px-4 py-3">
+                        <span className="block text-sm text-neutral-500">{k}</span>
+                        <strong className="text-base text-neutral-900">{v}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <PrimaryBtn onClick={() => onSelectProject(PROJECTS_EXPERIENCE[0])}>
+                    Inspect vessel specifications
+                  </PrimaryBtn>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Other projects */}
+          <motion.div
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {homeFeaturedProjects.slice(2).map((item) => (
+              <motion.button
+                key={item.id}
+                variants={staggerChild}
+                onClick={() => onSelectProject(item)}
+                className="group flex flex-col justify-between border border-neutral-200 bg-white p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-red-600 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-sm font-semibold text-neutral-500">
+                    <span>{item.category}</span>
+                    <Maximize2 className="h-4 w-4 transition-colors group-hover:text-red-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-neutral-900 transition-colors group-hover:text-red-600">
+                    {item.title}
+                  </h3>
+                  <p className="line-clamp-3 text-base leading-relaxed text-neutral-600">
+                    {item.description}
+                  </p>
+                </div>
+                <div className="mt-5 space-y-1.5 border-t border-neutral-100 pt-4 text-sm">
+                  <div className="flex justify-between gap-4">
+                    <span className="text-neutral-500">Material</span>
+                    <span className="text-right font-semibold text-neutral-800">{item.material}</span>
+                  </div>
+                  {item.weight && (
+                    <div className="flex justify-between gap-4">
+                      <span className="text-neutral-500">Weight</span>
+                      <span className="text-right font-semibold text-neutral-800">{item.weight}</span>
+                    </div>
+                  )}
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ====================== 10. PARTNERSHIP =========================== */}
+      <section className="relative overflow-hidden bg-neutral-950 py-20 text-white lg:py-28">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            backgroundSize: '56px 56px',
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute -left-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-red-600/20 blur-[120px]"
+        />
+
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
+          {/* Left: story */}
+          <div className="space-y-7 lg:col-span-6">
+            <SectionHead
+              light
+              label="Partnership approach"
+              title="Long-term customer relationships built on execution"
+            />
+            <Reveal delay={0.1}>
+              <p className="max-w-xl text-lg leading-relaxed text-neutral-300">
+                Our long-standing customer relationships reflect our focus on dependable
+                manufacturing, practical engineering and customer requirements. We deliver
+                fabricated components that match specifications without compromise.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.15}>
+              <div>
+                <span className="mb-3 block text-sm font-semibold text-neutral-400">We work closely with</span>
+                <div className="flex flex-wrap gap-2.5">
+                  {['Plant engineers', 'Procurement leaders', 'OEM designers'].map((t) => (
+                    <span
+                      key={t}
+                      className="border border-white/20 bg-white/5 px-4 py-2 text-base font-medium text-white"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <div className="flex flex-wrap gap-4">
+                <PrimaryBtn onClick={() => onOpenRFQ()}>Request a quote</PrimaryBtn>
+                <GhostBtn dark onClick={() => onNavigate('contact')}>
+                  Contact our team
+                </GhostBtn>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right: pillars */}
+          <motion.div
+            className="space-y-4 lg:col-span-6"
+            variants={staggerParent}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-80px' }}
+          >
+            {partnershipPillars.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <motion.div
+                  key={p.title}
+                  variants={staggerChild}
+                  whileHover={reduce ? undefined : { x: 6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                  className="group relative flex gap-5 overflow-hidden border border-white/10 bg-white/[0.04] p-6 transition-colors duration-300 hover:border-red-500/60 hover:bg-white/[0.07] sm:p-7"
+                >
+                  <span className="absolute inset-y-0 left-0 w-1 origin-top scale-y-0 bg-red-600 transition-transform duration-500 group-hover:scale-y-100" />
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center border border-red-500/40 bg-red-600/10 text-red-400 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <h3 className="text-xl font-bold text-white">{p.title}</h3>
+                    <p className="text-base leading-relaxed text-neutral-300">{p.text}</p>
+                  </div>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -right-1 -top-3 select-none text-7xl font-black text-white/[0.04]"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* =========================== 11. FAQ ============================== */}
+      <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <SectionHead
+            center
+            label="Questions and answers"
+            title="Frequently asked questions"
+            intro="Technical details about our manufacturing capabilities, materials and quotation process."
+          />
+          <div className="space-y-3">
+            {FAQ_LIST.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <Reveal key={idx}>
+                  <div
+                    className={`border transition-colors duration-300 ${
+                      isOpen ? 'border-red-600 bg-red-50/40' : 'border-neutral-200 bg-white hover:border-neutral-400'
+                    }`}
+                  >
+                    <button
+                      onClick={() => toggleFaq(idx)}
+                      aria-expanded={isOpen}
+                      className="flex w-full items-center justify-between gap-4 p-5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600 sm:p-6"
+                    >
+                      <span className="text-base font-semibold text-neutral-900 sm:text-lg">{faq.q}</span>
+                      <motion.span
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.3, ease: EASE }}
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center ${
+                          isOpen ? 'bg-red-600 text-white' : 'bg-neutral-100 text-neutral-600'
+                        }`}
+                      >
+                        <ChevronDown className="h-5 w-5" />
+                      </motion.span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          key="content"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: EASE }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-5 pb-6 text-base leading-relaxed text-neutral-700 sm:px-6">
+                            {faq.a}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================= 12. FINAL CTA ========================== */}
+      <section className="relative overflow-hidden bg-neutral-950 py-24 text-white lg:py-32">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            backgroundSize: '56px 56px',
+          }}
+        />
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/25 blur-[140px]"
+          animate={reduce ? undefined : { scale: [1, 1.15, 1], opacity: [0.5, 0.85, 0.5] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <div className="relative mx-auto max-w-4xl space-y-8 px-4 text-center sm:px-6 lg:px-8">
+          <Reveal>
+            <span className="text-sm font-semibold text-red-400">Get in touch</span>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              Have a requirement? <span className="text-red-500">Let's engineer it.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-neutral-300">
+              Share your drawings, specifications or project requirements with
+              Saghai Engineering. Our team will review your requirement and
+              discuss the appropriate manufacturing approach.
+            </p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <div className="flex flex-wrap justify-center gap-4">
+              <PrimaryBtn onClick={() => onOpenRFQ()}>Request a quote</PrimaryBtn>
+              <GhostBtn dark onClick={() => onNavigate('contact')}>
+                Contact our team
+              </GhostBtn>
+            </div>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <div className="flex flex-col items-center justify-center gap-3 border-t border-white/10 pt-8 text-base text-neutral-300 sm:flex-row sm:gap-8">
+              <span className="text-neutral-400">Coimbatore facility</span>
+              <a href="tel:+919585953545" className="inline-flex items-center gap-2 hover:text-white">
+                <Phone className="h-4 w-4 text-red-400" />
+                +91 95859 53545
+              </a>
+              <a href="mailto:Saghaiengg1978@gmail.com" className="inline-flex items-center gap-2 hover:text-white">
+                <Mail className="h-4 w-4 text-red-400" />
+                Saghaiengg1978@gmail.com
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </div>
+  );
+};
