@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ActivePage } from '../../types';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
-import logo from '../../assets/images/logo-display.png';
 
 interface NavbarProps {
   activePage: ActivePage;
@@ -41,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenRF
             aria-label="Saghai Engineering home"
           >
             <div className="flex shrink-0 flex-col items-start whitespace-nowrap">
-              <img src={logo} alt="Saghai" className="h-auto w-28 sm:w-32" />
+              <img src="/images/logo-display.png" alt="Saghai" className="h-auto w-28 sm:w-32" />
               <span className="mt-0.5 text-[12px] font-mono tracking-widest text-neutral-600 uppercase">
                 Engineering · Est. 1978
               </span>

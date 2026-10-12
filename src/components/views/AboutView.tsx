@@ -20,7 +20,7 @@ import {
   Compass 
 } from 'lucide-react';
 
-const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
+const HERO_IMG = '/images/hero_fabrication_facility_1791778010795.jpg';
 
 interface AboutViewProps {
   onNavigate: (page: ActivePage) => void;

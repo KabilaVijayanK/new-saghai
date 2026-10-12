@@ -2,7 +2,6 @@ import React from 'react';
 import { ActivePage } from '../../types';
 import { COMPANY_INFO } from '../../data/companyData';
 import { MapPin, Phone, Mail, Clock, ArrowUpRight } from 'lucide-react';
-import logo from '../../assets/images/logo-display.png';
 
 interface FooterProps {
   onNavigate: (page: ActivePage) => void;
@@ -74,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenRFQ }) => {
           {/* Column 1: Brand & Legacy (4 cols) */}
           <div className="lg:col-span-4 space-y-5">
             <div className="flex flex-col items-start">
-              <img src={logo} alt="Saghai" className="h-auto w-36" />
+              <img src="/images/logo-display.png" alt="Saghai" className="h-auto w-36" />
               <span className="mt-1 text-[10px] font-mono uppercase tracking-widest text-neutral-300">
                 Engineering · Coimbatore
               </span>

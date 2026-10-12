@@ -3,9 +3,9 @@ import { CAPABILITIES_DATA } from '../../data/companyData';
 import { PlateCalculator } from '../common/PlateCalculator';
 import { ArrowRight, Check, ShieldCheck, Factory, Gauge, Hammer, Flame, Ruler } from 'lucide-react';
 
-const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
-const LASER_IMG = '/src/assets/images/capability_laser_cutting_1791778023419.jpg';
-const BENDING_IMG = '/src/assets/images/capability_plate_bending_1791778038932.jpg';
+const HERO_IMG = '/images/hero_fabrication_facility_1791778010795.jpg';
+const LASER_IMG = '/images/capability_laser_cutting_1791778023419.jpg';
+const BENDING_IMG = '/images/capability_plate_bending_1791778038932.jpg';
 
 interface CapabilitiesViewProps {
   onOpenRFQ: (initialCapability?: string) => void;

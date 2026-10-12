@@ -5,7 +5,7 @@ import { PRODUCT_CATEGORIES, PROJECTS_EXPERIENCE } from '../../data/companyData'
 import { ArrowRight, ArrowUpRight, Check, ChevronDown, Maximize2, Phone } from 'lucide-react';
 
 // Reuses the facility photo already used on the home hero
-const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
+const HERO_IMG = '/images/hero_fabrication_facility_1791778010795.jpg';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 

@@ -39,10 +39,10 @@ import {
 import { PlateCalculator } from '../common/PlateCalculator';
 
 // Local images
-const HERO_IMG = '/src/assets/images/hero_fabrication_facility_1791778010795.jpg';
-const LASER_IMG = '/src/assets/images/capability_laser_cutting_1791778023419.jpg';
-const BENDING_IMG = '/src/assets/images/capability_plate_bending_1791778038932.jpg';
-const VESSEL_IMG = '/src/assets/images/project_pressure_vessel_1791778050554.jpg';
+const HERO_IMG = '/images/hero_fabrication_facility_1791778010795.jpg';
+const LASER_IMG = '/images/capability_laser_cutting_1791778023419.jpg';
+const BENDING_IMG = '/images/capability_plate_bending_1791778038932.jpg';
+const VESSEL_IMG = '/images/project_pressure_vessel_1791778050554.jpg';
 
 interface HomeViewProps {
   onNavigate: (page: ActivePage) => void;

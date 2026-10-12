@@ -3,8 +3,8 @@ import { CORE_SERVICES, WORK_PROCESS_STEPS } from '../../data/companyData';
 import { ArrowRight, Check, Sliders, Layers, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { PlateCalculator } from '../common/PlateCalculator';
 
-const LASER_IMG = '/src/assets/images/capability_laser_cutting_1791778023419.jpg';
-const BENDING_IMG = '/src/assets/images/capability_plate_bending_1791778038932.jpg';
+const LASER_IMG = '/images/capability_laser_cutting_1791778023419.jpg';
+const BENDING_IMG = '/images/capability_plate_bending_1791778038932.jpg';
 
 interface ServicesViewProps {
   onOpenRFQ: (initialService?: string) => void;
