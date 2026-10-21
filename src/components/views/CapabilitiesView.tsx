@@ -158,15 +158,7 @@ export const CapabilitiesView: React.FC<CapabilitiesViewProps> = ({ onOpenRFQ })
                   </p>
                 </div>
 
-                <div className="bg-white p-4 border border-neutral-200">
-                  <div className="flex justify-between items-center mb-1">
-                    <strong className="text-sm text-neutral-900">Aluminium</strong>
-                    <span className="text-xs font-mono text-red-600 font-bold">Structural Alloys</span>
-                  </div>
-                  <p className="text-xs text-neutral-600">
-                    Precision laser cutting and light structural enclosures for specialty machinery.
-                  </p>
-                </div>
+                
               </div>
             </div>
 

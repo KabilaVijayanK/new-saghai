@@ -39,10 +39,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate, onOpenRF
             className="flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600 rounded-sm"
             aria-label="Saghai Engineering home"
           >
-            <div className="flex shrink-0 flex-col items-start whitespace-nowrap">
+            <div className="flex shrink-0 items-center gap-2.5 whitespace-nowrap">
               <img src="/images/logo-display.png" alt="Saghai" className="h-auto w-28 sm:w-32" />
-              <span className="mt-0.5 text-[12px] font-mono tracking-widest text-neutral-600 uppercase">
-                Engineering · Est. 1978
+              <span className="text-[14px] font-mono tracking-widest text-black uppercase">
+                Engineering 
               </span>
             </div>
           </button>

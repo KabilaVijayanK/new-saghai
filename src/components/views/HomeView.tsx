@@ -12,7 +12,6 @@ import {
 } from 'framer-motion';
 import { ActivePage, ProjectItem } from '../../types';
 import {
-  APPROVED_CUSTOMERS,
   PRODUCT_CATEGORIES,
   WHY_CHOOSE_US,
   PROJECTS_EXPERIENCE,
@@ -33,8 +32,14 @@ import {
   ScanSearch,
   Cog,
   ClipboardCheck,
+  Truck,
+Droplets,
+FlaskConical,
+FileText,
+PackageCheck,
   Layers,
   CalendarCheck,
+  Factory,
 } from 'lucide-react';
 import { PlateCalculator } from '../common/PlateCalculator';
 
@@ -43,6 +48,69 @@ const HERO_IMG = '/images/hero_fabrication_facility_1791778010795.jpg';
 const LASER_IMG = '/images/capability_laser_cutting_1791778023419.jpg';
 const BENDING_IMG = '/images/capability_plate_bending_1791778038932.jpg';
 const VESSEL_IMG = '/images/project_pressure_vessel_1791778050554.jpg';
+
+/**
+ * Product + project images.
+ * Keys must match `cat.id` (PRODUCT_CATEGORIES) and `item.id` (PROJECTS_EXPERIENCE).
+ * Replace the filenames with the real ones from /public/images.
+ * Missing / wrong files fall back to a dark placeholder, so nothing breaks.
+ */
+const PRODUCT_IMAGES: Record<string, string> = {
+  'pressure-vessels': '/images/pressure-vessels.jpg',
+  'storage-tanks': '/images/storage-tanks.jpg',
+  'heat-exchangers': '/images/heat-exchangers.jpg',
+  'earthmoving-components': '/images/earthmoving.jpg',
+  'industrial-structures': '/images/structures.jpg',
+  'process-plant-components': '/images/process-plant.jpg',
+  'sheet-metal-components': '/images/sheet-metal.jpg',
+  'compression-dished-ends': '/images/dished-ends.jpg',
+};
+
+const PROJECT_IMAGES: Record<string, string> = {
+  'dozer-axle-housing': '/images/dozer-axle.jpg',
+  'motor-grader-drawbar': '/images/drawbar.jpg',
+  'water-sprinkler-28kl': '/images/sprinkler-28kl.jpg',
+  'water-sprinkler-50kl': '/images/sprinkler-50kl.jpg',
+};
+// Add real customers ONLY with their permission. Logo wall stays hidden while empty.
+const CUSTOMERS: { name: string; logo?: string }[] = [
+  // { name: 'Customer Name', logo: '/images/customers/customer-name.svg' },
+];
+
+const SECTORS = [
+  {
+    icon: Truck,
+    title: 'Earthmoving & construction equipment',
+    text: 'Axle housings, drawbars and structural components built to OEM drawings and tolerances.',
+    tag: 'Dozers · Motor graders',
+  },
+  {
+    icon: FlaskConical,
+    title: 'Process & chemical plants',
+    text: 'Pressure vessels, jacketed vessels and heat exchangers in SA516 and stainless grades.',
+    tag: 'UT · RT · Hydrotest',
+  },
+  {
+    icon: Droplets,
+    title: 'Storage & water infrastructure',
+    text: 'Storage tanks and water sprinkler tanks fabricated for municipal and industrial use.',
+    tag: '28 kL · 50 kL tanks',
+  },
+  {
+    icon: Factory,
+    title: 'Heavy engineering & manufacturing',
+    text: 'Industrial structures, dished ends and sheet metal components for production plants.',
+    tag: 'Structures · Dished ends',
+  },
+];
+
+const WORK_STEPS = [
+  { icon: FileText, title: 'Share your drawing', text: 'Send drawings, specs and quantities through the RFQ form.' },
+  { icon: ClipboardCheck, title: 'Engineering review', text: 'Our engineers check feasibility, material and process.' },
+  { icon: Hammer, title: 'Fabrication', text: 'Cutting, forming, welding and finishing under one roof.' },
+  { icon: ScanSearch, title: 'Inspection', text: 'NDT and dimensional checks against your drawing.' },
+  { icon: PackageCheck, title: 'Dispatch', text: 'Documented, traceable and delivered to schedule.' },
+];
 
 interface HomeViewProps {
   onNavigate: (page: ActivePage) => void;
@@ -111,6 +179,42 @@ const CountUp: React.FC<{ to: number; suffix?: string; format?: boolean }> = ({
       {format ? val.toLocaleString('en-IN') : val}
       {suffix}
     </span>
+  );
+};
+
+/**
+ * Image with skeleton while loading, fade-in once loaded, and a dark
+ * placeholder if the file is missing. Zooms + un-mutes on parent `group` hover.
+ */
+const SmartImage: React.FC<{ src?: string; alt: string; className?: string }> = ({
+  src,
+  alt,
+  className = '',
+}) => {
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(!src);
+
+  return (
+    <div className={`relative overflow-hidden bg-neutral-200 ${className}`}>
+      {!loaded && !failed && <div className="absolute inset-0 animate-pulse bg-neutral-200" />}
+      {failed ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 text-white/20">
+          <Factory className="h-12 w-12" />
+        </div>
+      ) : (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setFailed(true)}
+          className={`h-full w-full object-cover grayscale-[35%] transition-all duration-700 ease-out group-hover:scale-110 group-hover:grayscale-0 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+    </div>
   );
 };
 
@@ -267,17 +371,13 @@ export const HeroNarrative: React.FC<HeroProps> = ({ onOpenRFQ, onNavigate }) =>
         <h1 className="mt-8 w-full font-black uppercase tracking-tighter [font-size:clamp(1.9rem,5.6vw,5.75rem)] leading-[1]">
           <span className="block overflow-hidden pb-[0.06em]">
             <motion.span className="block" {...line(0)}>
-              Every component
+              Precision in Every Detail
             </motion.span>
           </span>
-          <span className="block overflow-hidden pb-[0.06em]">
-            <motion.span className="block" {...line(1)}>
-              starts as a drawing
-            </motion.span>
-          </span>
+
           <span className="block overflow-hidden pb-[0.1em]">
             <motion.span className="block text-red-500" {...line(2)}>
-              We build it.
+             Built to Perform.
             </motion.span>
           </span>
         </h1>
@@ -291,7 +391,7 @@ export const HeroNarrative: React.FC<HeroProps> = ({ onOpenRFQ, onNavigate }) =>
         >
           Custom-engineered products and fabricated components for heavy
           engineering, process equipment, earthmoving and manufacturing, built
-          around your drawings and specifications.
+          according to your specifications.
         </motion.p>
 
         {/* CTAs */}
@@ -350,13 +450,13 @@ export const HeroNarrative: React.FC<HeroProps> = ({ onOpenRFQ, onNavigate }) =>
 const CHAPTERS = [
   {
     kicker: 'The beginning',
-    title: 'A Coimbatore workshop, founded in 1978.',
+    title: 'A Coimbatore Manufacturing Unit, founded in 1978.',
     text: 'Saghai Engineering was founded in Coimbatore in 1978 and grew through practical fabrication expertise.',
   },
   {
     kicker: 'How we work',
     title: 'We build to your drawing.',
-    text: 'Customer-focused engineering and a commitment to producing components according to specific drawings, dimensions and requirements.',
+    text: 'Customer-focused engineering and a commitment to producing  custom components according to customer specific drawings, dimensions and requirements.',
   },
   {
     kicker: 'What we build',
@@ -536,8 +636,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
     { title: 'Hydraulic pressing', value: 'Up to 600 tonnes', text: 'Deep forming, dishing and high-tonnage plate shaping.' },
     { title: 'CNC laser cutting', value: '0.7 – 20 mm', text: 'Fibre laser cutting with clean, weld-ready edges in mild steel, SS and aluminium.' },
     { title: 'CNC oxyfuel cutting', value: 'Up to 150 mm', text: 'Heavy thermal cutting for thick carbon steel plates and flanges.' },
-    { title: 'Plate bending', value: '3 – 50 mm', text: 'Customer-confirmed bending for heavy shells, structures and rolled segments.' },
-    { title: 'Welding processes', value: 'FCAW · GMAW · SMAW · GTAW', text: 'Certified procedures for pressure boundaries and structural joints.' },
+    { title: 'Plate bending', value: '3 – 100 mm', text: 'Customer-confirmed bending for heavy shells, structures and rolled segments.' },
+    { title: 'Welding processes', value: 'FCAW · GMAW · SMAW · GTAW · SAW ', text: 'Certified procedures for pressure boundaries and structural joints.' },
     { title: 'Blasting & painting', value: 'In-house', text: 'Grit / shot blasting and a protective coating booth on site.' },
   ];
 
@@ -554,7 +654,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     },
     {
       icon: CalendarCheck,
-      title: 'On-schedule delivery',
+      title: 'On-Time delivery',
       text: 'Dependable manufacturing planned around your project timeline.',
     },
   ];
@@ -672,13 +772,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
               },
               {
                 tag: 'Forming',
-                range: '3 – 50 mm',
+                range: '3 – 100 mm',
                 title: 'Industrial plate bending',
-                text: 'Controlled plate bending for fabricated components that need accurate geometry and forming, from 3–50 mm current customer-confirmed capability.',
+                text: 'Controlled plate bending for fabricated components that need accurate geometry and forming, from 3–100 mm current customer-confirmed capability.',
                 img: BENDING_IMG,
-                alt: 'Industrial plate bending 3–50 mm at Saghai Engineering',
+                alt: 'Industrial plate bending 3–100 mm at Saghai Engineering',
                 points: [
-                  'Customer-confirmed bending capability from 3 mm to 50 mm',
+                  'Customer-confirmed bending capability from 3 mm to 100 mm',
                   'Cylindrical shell rolling and heavy structural section bending',
                 ],
                 cta: 'Request plate bending quote',
@@ -745,33 +845,43 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           <motion.div
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerParent}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
           >
-            {PRODUCT_CATEGORIES.map((cat) => (
+            {PRODUCT_CATEGORIES.map((cat, i) => (
               <motion.button
                 key={cat.id}
                 variants={staggerChild}
                 onClick={() => onNavigate('products')}
-                className="group relative flex flex-col justify-between overflow-hidden border border-neutral-200 bg-white p-6 text-left transition-colors duration-300 hover:border-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+                className="group relative flex flex-col overflow-hidden border border-neutral-200 bg-white text-left transition-all duration-500 hover:-translate-y-1.5 hover:border-red-600 hover:shadow-[0_28px_50px_-28px_rgba(0,0,0,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
               >
-                {/* sliding red edge */}
-                <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-xl font-bold leading-snug text-neutral-900 transition-colors group-hover:text-red-600">
-                      {cat.title}
-                    </h3>
-                    <ArrowUpRight className="h-5 w-5 shrink-0 text-neutral-400 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-red-600" />
-                  </div>
-                  <p className="text-sm leading-relaxed text-neutral-600">{cat.description}</p>
+                {/* Image */}
+                <div className="relative aspect-[4/3]">
+                  <SmartImage
+                    src={PRODUCT_IMAGES[cat.id]}
+                    alt={`${cat.title} fabricated by Saghai Engineering`}
+                    className="absolute inset-0"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/10 to-transparent" />
+                  <span className="absolute left-3 top-3 bg-white/95 px-2.5 py-1 text-xs font-bold tabular-nums text-neutral-900">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="absolute right-3 top-3 flex h-9 w-9 translate-y-2 items-center justify-center bg-red-600 text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    <ArrowUpRight className="h-5 w-5" />
+                  </span>
                 </div>
-                <div className="mt-5 border-t border-neutral-100 pt-4 text-sm">
-                  <span className="block text-neutral-500">Typical scope</span>
-                  <span className="font-semibold text-neutral-800">{cat.examples[0]}</span>
+
+                {/* Text */}
+                <div className="relative flex flex-1 flex-col gap-3 p-5">
+                  <h3 className="text-xl font-bold leading-snug text-neutral-900 transition-colors group-hover:text-red-600">
+                    {cat.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-neutral-600">{cat.description}</p>
+                  {/* sliding red edge */}
+                  <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
                 </div>
               </motion.button>
             ))}
@@ -895,62 +1005,148 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* ======================== 8. CUSTOMERS ============================ */}
-      <section className="border-b border-neutral-200 bg-neutral-50 py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-            <SectionHead
-              label="Customer relationships"
-              title="Trusted by industrial customers"
-              intro="Our project experience includes work for established industrial companies across engineering, manufacturing and equipment-related applications."
-            />
-            <Reveal>
-              <div className="flex w-fit items-center gap-4 border-l-4 border-red-600 bg-white py-3 pl-5 pr-8 shadow-sm">
-                <span className="text-5xl font-black tabular-nums text-neutral-900">
-                  <CountUp to={APPROVED_CUSTOMERS.length} />
-                </span>
-                <span className="text-sm font-semibold leading-tight text-neutral-600">
-                  Approved
-                  <br />
-                  customers
-                </span>
-              </div>
-            </Reveal>
-          </div>
+     {/* ======================== 8. CUSTOMERS ============================ */}
+<section className="relative overflow-hidden border-b border-neutral-200 bg-neutral-50 py-20 lg:py-28">
+  <div
+    aria-hidden
+    className="pointer-events-none absolute inset-0 opacity-[0.035]"
+    style={{
+      backgroundImage:
+        'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)',
+      backgroundSize: '56px 56px',
+    }}
+  />
 
-          <motion.div
-            className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
-            variants={staggerParent}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-60px' }}
+  <div className="relative mx-auto max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">
+    {/* Header */}
+    <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+      <SectionHead
+        label="Who we build for"
+        title="Fabrication partner to demanding industrial buyers"
+        intro="From earthmoving OEMs to process plants, our customers rely on us for components that fit the drawing, pass inspection and arrive on schedule."
+      />
+      <Reveal delay={0.1}>
+        <PrimaryBtn onClick={() => onOpenRFQ()}>Discuss your requirement</PrimaryBtn>
+      </Reveal>
+    </div>
+
+    {/* Sectors */}
+    <motion.div
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '-80px' }}
+    >
+      {SECTORS.map((s, i) => {
+        const Icon = s.icon;
+        return (
+          <motion.article
+            key={s.title}
+            variants={staggerChild}
+            whileHover={reduce ? undefined : { y: -6 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+            className="group relative flex flex-col gap-5 overflow-hidden border border-neutral-200 bg-white p-7 transition-colors duration-300 hover:border-red-600"
           >
-            {APPROVED_CUSTOMERS.map((cust, i) => (
-              <motion.div
-                key={cust.name}
-                variants={staggerChild}
-                whileHover={reduce ? undefined : { y: -6 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                className="group relative flex h-44 flex-col items-center justify-center gap-2 overflow-hidden border border-neutral-200 bg-white p-4 text-center transition-colors duration-300 hover:border-neutral-950 hover:bg-neutral-950"
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -right-2 -top-4 select-none text-8xl font-black text-neutral-100"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div className="relative flex h-12 w-12 items-center justify-center border border-red-600/30 bg-red-50 text-red-600 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white">
+              <Icon className="h-6 w-6" />
+            </div>
+            <div className="relative space-y-2">
+              <h3 className="text-xl font-bold leading-snug text-neutral-900">{s.title}</h3>
+              <p className="text-base leading-relaxed text-neutral-600">{s.text}</p>
+            </div>
+            <span className="relative mt-auto w-fit border-t border-neutral-200 pt-4 text-sm font-semibold text-neutral-500">
+              {s.tag}
+            </span>
+            <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
+          </motion.article>
+        );
+      })}
+    </motion.div>
+
+    {/* Logo wall (hidden until CUSTOMERS has entries) */}
+    {CUSTOMERS.length > 0 && (
+      <Reveal>
+        <div className="space-y-6">
+          <p className="text-center text-sm font-semibold text-neutral-500">
+            Companies we have manufactured for
+          </p>
+          <ul className="grid grid-cols-2 gap-px border border-neutral-200 bg-neutral-200 sm:grid-cols-3 lg:grid-cols-5">
+            {CUSTOMERS.map((c) => (
+              <li
+                key={c.name}
+                className="group flex h-24 items-center justify-center bg-white px-6 transition-colors hover:bg-neutral-50"
               >
-                <span className="absolute left-3 top-3 text-xs font-bold tabular-nums text-neutral-300 transition-colors group-hover:text-neutral-600">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="text-3xl font-black tracking-wide text-neutral-900 transition-colors duration-300 group-hover:text-red-500">
-                  {cust.code}
-                </span>
-                {cust.name !== cust.code && (
-                  <span className="text-sm leading-snug text-neutral-600 transition-colors group-hover:text-neutral-300">
-                    {cust.name}
+                {c.logo ? (
+                  <img
+                    src={c.logo}
+                    alt={c.name}
+                    loading="lazy"
+                    className="max-h-10 w-auto object-contain opacity-60 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
+                  />
+                ) : (
+                  <span className="text-center text-base font-bold text-neutral-500 transition-colors group-hover:text-neutral-900">
+                    {c.name}
                   </span>
                 )}
-                <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100" />
-              </motion.div>
+              </li>
             ))}
-          </motion.div>
+          </ul>
         </div>
-      </section>
+      </Reveal>
+    )}
 
+    {/* Drawing to dispatch */}
+    <Reveal>
+      <div className="border border-neutral-200 bg-white">
+        <div className="flex flex-col justify-between gap-3 border-b border-neutral-200 p-6 sm:flex-row sm:items-center sm:p-8">
+          <div>
+            <span className="text-sm font-semibold text-red-600">How we work with buyers</span>
+            <h3 className="mt-1 text-2xl font-bold text-neutral-900 sm:text-3xl">
+              From your drawing to dispatch
+            </h3>
+          </div>
+          <button
+            onClick={() => onNavigate('projects')}
+            className="group inline-flex items-center gap-2 text-base font-bold text-neutral-900 hover:text-red-600"
+          >
+            See project experience
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+          </button>
+        </div>
+
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
+          {WORK_STEPS.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <li
+                key={s.title}
+                className="relative border-neutral-200 p-6 sm:p-7 [&:not(:first-child)]:border-t sm:[&:not(:first-child)]:border-t-0 sm:[&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 lg:[&:not(:first-child)]:border-l"
+              >
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center bg-neutral-900 text-white">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="text-sm font-bold tabular-nums text-neutral-400">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-neutral-900">{s.title}</h4>
+                <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">{s.text}</p>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </Reveal>
+  </div>
+</section>
       {/* ========================= 9. PROJECTS ============================ */}
       <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
@@ -987,7 +1183,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     <span className="text-red-600">SA516 / SS304</span>
                   </div>
                   <h3 className="text-2xl font-bold leading-tight sm:text-3xl">
-                    Chemical storage / jacketed vessel and SS304 process vessel
+                    Chemical storage / jacketed vessel
                   </h3>
                   <p className="text-base leading-relaxed text-neutral-600">
                     Engineered with SA516 boiler-grade plate and SS304 stainless
@@ -1000,7 +1196,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     {[
                       ['Weight', '~8 tonnes'],
                       ['Dimensions', 'Ø 2,000 × 9,000 mm'],
-                      ['Testing', 'UT and hydrostatic'],
+                      ['Testing', 'RT and hydrostatic'],
                     ].map(([k, v]) => (
                       <div key={k} className="border-l-4 border-red-600 bg-neutral-50 px-4 py-3">
                         <span className="block text-sm text-neutral-500">{k}</span>
@@ -1018,7 +1214,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
           </Reveal>
 
-          {/* Other projects */}
+          {/* Other projects (slice 1–4 = a clean row of three, includes index 1) */}
           <motion.div
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             variants={staggerParent}
@@ -1026,39 +1222,54 @@ export const HomeView: React.FC<HomeViewProps> = ({
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
           >
-            {homeFeaturedProjects.slice(2).map((item) => (
-              <motion.button
-                key={item.id}
-                variants={staggerChild}
-                onClick={() => onSelectProject(item)}
-                className="group flex flex-col justify-between border border-neutral-200 bg-white p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-red-600 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm font-semibold text-neutral-500">
-                    <span>{item.category}</span>
-                    <Maximize2 className="h-4 w-4 transition-colors group-hover:text-red-600" />
+            {homeFeaturedProjects.slice(1, 4).map((item) => {
+              const image =
+                (item as ProjectItem & { image?: string }).image ?? PROJECT_IMAGES[item.id];
+              return (
+                <motion.button
+                  key={item.id}
+                  variants={staggerChild}
+                  onClick={() => onSelectProject(item)}
+                  className="group flex flex-col overflow-hidden border border-neutral-200 bg-white text-left transition-all duration-500 hover:-translate-y-1.5 hover:border-red-600 hover:shadow-[0_28px_50px_-28px_rgba(0,0,0,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+                >
+                  {/* Image */}
+                  <div className="relative h-56">
+                    <SmartImage src={image} alt={item.title} className="absolute inset-0" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-transparent to-transparent" />
+                    <span className="absolute left-3 top-3 bg-white px-3 py-1 text-xs font-semibold text-neutral-900">
+                      {item.category}
+                    </span>
+                    <span className="absolute bottom-3 left-3 flex translate-y-3 items-center gap-2 text-sm font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                      <Maximize2 className="h-4 w-4" /> View specifications
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-neutral-900 transition-colors group-hover:text-red-600">
-                    {item.title}
-                  </h3>
-                  <p className="line-clamp-3 text-base leading-relaxed text-neutral-600">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="mt-5 space-y-1.5 border-t border-neutral-100 pt-4 text-sm">
-                  <div className="flex justify-between gap-4">
-                    <span className="text-neutral-500">Material</span>
-                    <span className="text-right font-semibold text-neutral-800">{item.material}</span>
-                  </div>
-                  {item.weight && (
-                    <div className="flex justify-between gap-4">
-                      <span className="text-neutral-500">Weight</span>
-                      <span className="text-right font-semibold text-neutral-800">{item.weight}</span>
+
+                  {/* Text */}
+                  <div className="flex flex-1 flex-col justify-between p-6">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-bold text-neutral-900 transition-colors group-hover:text-red-600">
+                        {item.title}
+                      </h3>
+                      <p className="line-clamp-3 text-base leading-relaxed text-neutral-600">
+                        {item.description}
+                      </p>
                     </div>
-                  )}
-                </div>
-              </motion.button>
-            ))}
+                    <div className="mt-5 space-y-1.5 border-t border-neutral-100 pt-4 text-sm">
+                      <div className="flex justify-between gap-4">
+                        <span className="text-neutral-500">Material</span>
+                        <span className="text-right font-semibold text-neutral-800">{item.material}</span>
+                      </div>
+                      {item.weight && (
+                        <div className="flex justify-between gap-4">
+                          <span className="text-neutral-500">Weight</span>
+                          <span className="text-right font-semibold text-neutral-800">{item.weight}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.button>
+              );
+            })}
           </motion.div>
         </div>
       </section>
@@ -1091,7 +1302,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <p className="max-w-xl text-lg leading-relaxed text-neutral-300">
                 Our long-standing customer relationships reflect our focus on dependable
                 manufacturing, practical engineering and customer requirements. We deliver
-                fabricated components that match specifications without compromise.
+                fabricated components that meet in specifications without compromise.
               </p>
             </Reveal>
 

@@ -229,7 +229,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenRFQ }) => {
             <span>Coimbatore, Tamil Nadu, India</span>
           </div>
           <div className="flex items-center gap-4 font-mono text-[11px] text-neutral-400">
-            <span>MS · SS · ALUMINIUM FABRICATION</span>
+            <span>MS · SS · FABRICATION</span>
             <span>·</span>
             <span>ASME / IS DRAWING COMPLIANCE</span>
           </div>

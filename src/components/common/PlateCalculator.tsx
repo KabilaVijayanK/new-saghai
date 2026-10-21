@@ -92,17 +92,7 @@ export const PlateCalculator: React.FC<PlateCalculatorProps> = ({ onQuoteWithSpe
               >
                 Stainless Steel (8.00)
               </button>
-              <button
-                type="button"
-                onClick={() => setMaterial('al')}
-                className={`py-2 px-3 text-xs font-medium border text-center transition-colors ${
-                  material === 'al'
-                    ? 'border-red-600 bg-red-50/50 text-red-700 font-semibold'
-                    : 'border-neutral-300 hover:border-neutral-400 text-neutral-700'
-                }`}
-              >
-                Aluminium (2.70)
-              </button>
+              
             </div>
           </div>
 

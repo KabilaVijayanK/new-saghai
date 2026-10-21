@@ -44,9 +44,9 @@ export const CORE_SERVICES = [
     title: 'Industrial Plate Bending',
     shortTitle: 'Plate Bending',
     description: 'Controlled plate bending for fabricated components requiring accurate geometry and forming, from 3–50 mm thickness.',
-    capabilityRange: '3 – 50 mm',
+    capabilityRange: '3 – 100 mm',
     features: [
-      'Customer-confirmed bending capability from 3 mm to 50 mm',
+      'Customer-confirmed bending capability from 3 mm to 100 mm',
       'Precision angle control and crown compensation',
       'Cylindrical shell rolling and multi-radius segment forming',
       'Heavy structural sections, channels, and reinforcement ribs'
@@ -191,9 +191,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     examples: [],
   },
   {
-    id: 'compression-dish-ends',
-    title: 'Compression Dish Ends',
-    description: 'Compression dish ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
+    id: 'compression-dished-ends',
+    title: 'Compression Dished Ends',
+    description: 'Compression dished ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
     typicalMaterials: [],
     examples: [],
   }
@@ -269,7 +269,7 @@ export const INDUSTRIES_SERVED: IndustrySector[] = [
 export const CAPABILITIES_DATA: CapabilityDetail[] = [
   {
     id: 'hydraulic-pressing',
-    title: 'Hydraulic Pressing',
+    title: 'Bending & Rolling',
     capacity: 'Up to 600 tonnes',
     description: 'Heavy hydraulic pressing capacity for deep forming, dishing, and high-tonnage plate shaping.',
     specifications: ['600 Tonne Maximum Capacity', 'Multi-stroke deep draw forming', 'Compression dish end forming', 'High-strength structural plate forming'],
@@ -294,17 +294,17 @@ export const CAPABILITIES_DATA: CapabilityDetail[] = [
   {
     id: 'plate-bending',
     title: 'Plate Forming & Bending',
-    capacity: '3 – 50 mm',
+    capacity: '3 – 100 mm',
     description: 'Heavy industrial plate bending and rolling capable of tight cylindrical radii and complex multi-step bends.',
-    specifications: ['Customer-Confirmed Range: 3 mm to 50 mm', 'Variable V-die and segment tooling', 'Cylindrical shell rolling capability', 'Uniform bend angles along long lengths'],
-    highlight: 'Customer-confirmed capability up to 50 mm plate thickness'
+    specifications: ['Customer-Confirmed Range: 3 mm to 100 mm', 'Variable V-die and segment tooling', 'Cylindrical shell rolling capability', 'Uniform bend angles along long lengths'],
+    highlight: 'Customer-confirmed capability up to 100 mm plate thickness'
   },
   {
     id: 'welding-processes',
     title: 'Welding Capabilities',
-    capacity: 'FCAW, GMAW, SMAW & GTAW',
+    capacity: 'FCAW, GMAW, SMAW, SAW & GTAW',
     description: 'Certified welding procedures for critical pressure boundaries and structural joints.',
-    specifications: ['FCAW (Flux-Cored Arc Welding)', 'GMAW (Gas Metal Arc / MIG Welding)', 'SMAW (Shielded Metal Arc / Stick)', 'GTAW (Gas Tungsten Arc / TIG) for SS & root passes'],
+    specifications: ['FCAW (Flux-Cored Arc Welding)', 'GMAW (Gas Metal Arc / MIG Welding)', 'SMAW (Shielded Metal Arc / Stick)', 'SAW (Submerged Arc Welding)', 'GTAW (Gas Tungsten Arc / TIG) for SS & root passes'],
     highlight: 'Multi-process welding tailored to material metallurgy'
   },
   {
@@ -470,15 +470,7 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     application: 'Mineral processing, quarrying and solid waste sorting',
     keySpecs: ['Perforated Screen Sections', 'Drive Ring Integration', 'Dynamic Balance Checking', 'Heavy Support Bearings']
   },
-  {
-    id: 'track-width-mine-plough',
-    title: 'Track Width Mine Plough',
-    category: 'Earthmoving & Mining',
-    material: 'Armored & High-Yield Steel',
-    description: 'Specialized front-mounted heavy plough fabricated to clear terrain and ground obstacles in defense and heavy earthmoving applications.',
-    application: 'Defense engineering and harsh terrain earth clearing',
-    keySpecs: ['High-Strength Tine Formings', 'Heavy Pin Articulation', 'Reinforced Blade Edges', 'Severe Shock Resistance']
-  },
+  
   {
     id: 'marine-pivot-structure',
     title: 'Marine Pivot Structure',

@@ -6,6 +6,8 @@ import { HomeView } from './components/views/HomeView';
 import { AboutView } from './components/views/AboutView';
 import { ServicesView } from './components/views/ServicesView';
 import { ProductsView } from './components/views/ProductsView';
+import { ProductDetailView } from './components/views/ProductDetailView';
+import type { ProductCategory } from './components/views/productImages';
 import { IndustriesView } from './components/views/IndustriesView';
 import { CapabilitiesView } from './components/views/CapabilitiesView';
 import { ProjectsView } from './components/views/ProjectsView';
@@ -20,6 +22,7 @@ export default function App() {
   const [isRFQOpen, setIsRFQOpen] = useState(false);
   const [rfqInitialCategory, setRfqInitialCategory] = useState<string>('');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Monitor scroll for scroll-to-top button
@@ -37,6 +40,7 @@ export default function App() {
 
   const handleNavigate = (page: ActivePage) => {
     setActivePage(page);
+    setSelectedProduct(null); // leaving / re-clicking a page always closes the product details
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -47,6 +51,11 @@ export default function App() {
 
   const handleSelectProject = (project: ProjectItem) => {
     setSelectedProject(project);
+  };
+
+  const handleSelectProduct = (product: ProductCategory) => {
+    setSelectedProduct(product);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRequestSimilarProject = (projectTitle: string) => {
@@ -68,7 +77,7 @@ export default function App() {
           <div className="flex items-center gap-3">
             <span>COIMBATORE WORKS · ESTABLISHED 1978</span>
             <span className="hidden sm:inline">·</span>
-            <span className="hidden sm:inline">30,000+ SQ. FT. FABRICATION FACILITY</span>
+            <span className="hidden sm:inline">FABRICATION FACILITY</span>
           </div>
           <div className="flex items-center gap-4 text-neutral-300">
             <a
@@ -120,10 +129,25 @@ export default function App() {
           />
         )}
 
-        {activePage === 'products' && (
+        {/* Products list */}
+        {activePage === 'products' && !selectedProduct && (
           <ProductsView
             onOpenRFQ={handleOpenRFQ}
+            onSelectProduct={handleSelectProduct}
+          />
+        )}
+
+        {/* Product details page */}
+        {activePage === 'products' && selectedProduct && (
+          <ProductDetailView
+            product={selectedProduct}
+            onBack={() => {
+              setSelectedProduct(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenRFQ={handleOpenRFQ}
             onSelectProject={handleSelectProject}
+            onSelectProduct={handleSelectProduct}
           />
         )}
 

@@ -134,10 +134,10 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onOpenRFQ }) => {
                 Industrial Plate Bending
               </h2>
               <div className="text-2xl font-mono font-bold text-red-600">
-                3 – 50 mm Customer-Confirmed Scope
+                3 – 100 mm Customer-Confirmed Scope
               </div>
               <p className="text-base text-neutral-700 leading-relaxed">
-                Controlled plate bending for fabricated components requiring accurate geometry and forming, from 3–50 mm current customer-confirmed capability.
+                Controlled plate bending for fabricated components requiring accurate geometry and forming, from 3–100 mm current customer-confirmed capability.
               </p>
 
               <div className="space-y-2">
@@ -147,7 +147,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ onOpenRFQ }) => {
                 <div className="space-y-2 text-xs text-neutral-700">
                   <div className="flex items-start gap-2 bg-neutral-50 p-2.5 border border-neutral-200">
                     <Check className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
-                    <span>Customer-confirmed bending capability spanning 3 mm up to 50 mm plate thickness</span>
+                    <span>Customer-confirmed bending capability spanning 3 mm up to 100 mm plate thickness</span>
                   </div>
                   <div className="flex items-start gap-2 bg-neutral-50 p-2.5 border border-neutral-200">
                     <Check className="w-4 h-4 text-red-600 mt-0.5 shrink-0" />
