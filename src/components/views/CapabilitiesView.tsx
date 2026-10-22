@@ -53,7 +53,7 @@ export const CapabilitiesView: React.FC<CapabilitiesViewProps> = ({ onOpenRFQ })
             </div>
             <div>
               <span className="text-neutral-500 block uppercase">Plate Bending</span>
-              <strong className="text-white text-base">3–50 mm Confirmed</strong>
+              <strong className="text-white text-base">3–100 mm Confirmed</strong>
             </div>
           </div>
         </div>

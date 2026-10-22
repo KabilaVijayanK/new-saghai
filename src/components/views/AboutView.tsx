@@ -203,7 +203,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onNavigate, onOpenRFQ }) =
                   </div>
                   <div className="flex items-center gap-2.5 p-2.5 bg-white border border-neutral-200">
                     <Check className="w-4 h-4 text-red-600 shrink-0" />
-                    <span>Plate forming / bending (3–50 mm)</span>
+                    <span>Plate forming / bending (3–100 mm)</span>
                   </div>
                   <div className="flex items-center gap-2.5 p-2.5 bg-white border border-neutral-200">
                     <Check className="w-4 h-4 text-red-600 shrink-0" />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivePage, ProjectItem } from './types';
+import { PRODUCT_CATEGORIES, COMPANY_INFO } from './data/companyData';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HomeView } from './components/views/HomeView';
@@ -15,15 +16,53 @@ import { ContactView } from './components/views/ContactView';
 import { RFQModal } from './components/common/RFQModal';
 import { ProjectModal } from './components/common/ProjectModal';
 import { Phone, Mail, ArrowUp } from 'lucide-react';
-import { COMPANY_INFO } from './data/companyData';
+
+interface AppRoute {
+  activePage: ActivePage;
+  selectedProduct: ProductCategory | null;
+}
+
+const PAGE_PATHS: Record<ActivePage, string> = {
+  home: '/',
+  about: '/about',
+  services: '/services',
+  products: '/products',
+  industries: '/industries',
+  capabilities: '/capabilities',
+  projects: '/projects',
+  contact: '/contact',
+};
+
+const resolveRoute = (pathname: string): AppRoute => {
+  const path = pathname.replace(/\/+$/, '') || '/';
+  const productMatch = /^\/products\/([^/]+)$/.exec(path);
+
+  if (productMatch) {
+    const selectedProduct =
+      PRODUCT_CATEGORIES.find((product) => product.id === productMatch[1]) ?? null;
+    return selectedProduct
+      ? { activePage: 'products', selectedProduct }
+      : { activePage: 'products', selectedProduct: null };
+  }
+
+  const activePage = (Object.keys(PAGE_PATHS) as ActivePage[]).find(
+    (page) => PAGE_PATHS[page] === path,
+  );
+  return { activePage: activePage ?? 'home', selectedProduct: null };
+};
+
+const getRoutePath = ({ activePage, selectedProduct }: AppRoute): string =>
+  selectedProduct
+    ? `${PAGE_PATHS.products}/${encodeURIComponent(selectedProduct.id)}`
+    : PAGE_PATHS[activePage];
 
 export default function App() {
-  const [activePage, setActivePage] = useState<ActivePage>('home');
+  const [route, setRoute] = useState<AppRoute>(() => resolveRoute(window.location.pathname));
   const [isRFQOpen, setIsRFQOpen] = useState(false);
   const [rfqInitialCategory, setRfqInitialCategory] = useState<string>('');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { activePage, selectedProduct } = route;
 
   // Monitor scroll for scroll-to-top button
   useEffect(() => {
@@ -38,9 +77,31 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const syncRoute = () => {
+      const nextRoute = resolveRoute(window.location.pathname);
+      const canonicalPath = getRoutePath(nextRoute);
+      if (window.location.pathname !== canonicalPath) {
+        window.history.replaceState(null, '', canonicalPath);
+      }
+      setRoute(nextRoute);
+    };
+
+    window.addEventListener('popstate', syncRoute);
+    syncRoute();
+    return () => window.removeEventListener('popstate', syncRoute);
+  }, []);
+
+  const navigateTo = (nextRoute: AppRoute) => {
+    const path = getRoutePath(nextRoute);
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
+    setRoute(nextRoute);
+  };
+
   const handleNavigate = (page: ActivePage) => {
-    setActivePage(page);
-    setSelectedProduct(null); // leaving / re-clicking a page always closes the product details
+    navigateTo({ activePage: page, selectedProduct: null });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -54,7 +115,7 @@ export default function App() {
   };
 
   const handleSelectProduct = (product: ProductCategory) => {
-    setSelectedProduct(product);
+    navigateTo({ activePage: 'products', selectedProduct: product });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -141,10 +202,7 @@ export default function App() {
         {activePage === 'products' && selectedProduct && (
           <ProductDetailView
             product={selectedProduct}
-            onBack={() => {
-              setSelectedProduct(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onBack={() => handleNavigate('products')}
             onOpenRFQ={handleOpenRFQ}
             onSelectProject={handleSelectProject}
             onSelectProduct={handleSelectProduct}

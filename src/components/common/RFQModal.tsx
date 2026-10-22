@@ -197,7 +197,7 @@ export const RFQModal: React.FC<RFQModalProps> = ({ isOpen, onClose, initialProd
     </h3>
     <p className="mt-3 text-sm leading-relaxed text-neutral-300">
       Our team reviews every enquiry against our 600 T press, laser cutting (0.7–20 mm) and
-      plate bending (3–50 mm) capability.
+      plate bending (3–100 mm) capability.
     </p>
 
     {/* Steps: hidden automatically on short screens so nothing overflows */}

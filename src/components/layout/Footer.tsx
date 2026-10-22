@@ -35,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenRFQ }) => {
                 Up to 600 Tonnes Press
               </p>
               <p className="text-xs text-neutral-400 mt-1">
-                3–50 mm Plate Bending Capability
+                3–100 mm Plate Bending Capability
               </p>
             </div>
 
