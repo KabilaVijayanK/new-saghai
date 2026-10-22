@@ -93,6 +93,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'pressure-vessels',
     title: 'Pressure Vessels',
     description: 'Saghai Engineering manufactures pressure vessels for chemical and process plant applications. Share your requirements and drawings to discuss a vessel built for your project.',
+    images:['/pressure vessel.png'],
     typicalMaterials: [
       'SA516 (chemical storage vessel example)',
       'SS304 (chemical plant vessel example)',
@@ -109,6 +110,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'storage-tanks',
     title: 'Storage Tanks',
     description: 'Saghai Engineering manufactures storage tanks for water treatment, water sprinkler and chemical storage applications, including tank and cone structures.',
+    
     typicalMaterials: [
       'Mild steel (documented tank examples)',
       'IS2062 E250 (50 KL sprinkler tank example)',
@@ -136,6 +138,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'earthmoving-components',
     title: 'Earthmoving Equipment Components',
     description: 'Saghai Engineering fabricates earthmoving equipment components and spares for dozers, motor graders and drilling equipment.',
+    images:['/c-frame for dozer.png'],
     typicalMaterials: [
       'Mild steel (selected equipment examples)',
       '690QL (track width mine plough example)',
@@ -188,12 +191,14 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     title: 'Sheet Metal Components',
     description: 'Saghai Engineering manufactures custom sheet metal components to customer drawings and specifications.',
     typicalMaterials: [],
+    images: ['/'],
     examples: [],
   },
   {
     id: 'compression-dished-ends',
     title: 'Compression Dished Ends',
     description: 'Compression dished ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
+    images: ['/pressure%20vessel.png'],
     typicalMaterials: [],
     examples: [],
   }

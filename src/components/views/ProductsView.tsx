@@ -205,7 +205,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                       type="button"
                       onClick={() => onSelectProduct(cat)}
                       aria-label={`View details for ${cat.title}`}
-                      className="relative block aspect-[4/3] w-full overflow-hidden bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+                      className="relative block aspect-video w-full overflow-hidden bg-neutral-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
                     >
                       <SafeImg
                         src={imgs[0]}
@@ -223,7 +223,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
                           }`}
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/10 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/45 via-neutral-950/5 to-transparent" />
 
                       <span className="absolute left-0 top-5 bg-red-600 px-3 py-1.5 text-sm font-bold text-white">
                         Category {number}

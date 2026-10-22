@@ -859,13 +859,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 className="group relative flex flex-col overflow-hidden border border-neutral-200 bg-white text-left transition-all duration-500 hover:-translate-y-1.5 hover:border-red-600 hover:shadow-[0_28px_50px_-28px_rgba(0,0,0,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3]">
+                <div className="relative aspect-video overflow-hidden">
                   <SmartImage
-                    src={PRODUCT_IMAGES[cat.id]}
+                    src={cat.images?.[0] ?? PRODUCT_IMAGES[cat.id]}
                     alt={`${cat.title} fabricated by Saghai Engineering`}
                     className="absolute inset-0"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/35 via-neutral-950/5 to-transparent" />
                   <span className="absolute left-3 top-3 bg-white/95 px-2.5 py-1 text-xs font-bold tabular-nums text-neutral-900">
                     {String(i + 1).padStart(2, '0')}
                   </span>

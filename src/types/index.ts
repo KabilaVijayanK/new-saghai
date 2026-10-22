@@ -27,6 +27,7 @@ export interface ProductCategory {
   description: string;
   typicalMaterials: string[];
   examples: string[];
+  images?: string[];
   applicableStandards?: string;
 }
 
