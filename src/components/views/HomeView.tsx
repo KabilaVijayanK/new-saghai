@@ -25,6 +25,8 @@ import {
   Mail,
   Flame,
   Hammer,
+  Building2,
+  ShieldCheck,
   Zap,
   Ruler,
   Paintbrush,
@@ -37,8 +39,9 @@ FlaskConical,
 FileText,
 PackageCheck,
   Layers,
-  CalendarCheck,
-  Factory,
+CalendarCheck,
+Factory,
+BadgeCheck,
 } from 'lucide-react';
 import { PlateCalculator } from '../common/PlateCalculator';
 
@@ -963,7 +966,168 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* ========================== 7. WHY ================================ */}
+   {/* ======================== 7. ISO QUALITY ========================== */}
+<section className="relative isolate overflow-hidden border-b border-neutral-200 bg-neutral-50 py-24 lg:py-32">
+  <div
+    aria-hidden
+    className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5] [background-image:linear-gradient(to_right,rgba(15,23,42,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+  />
+  <div
+    aria-hidden
+    className="pointer-events-none absolute -right-28 -top-24 h-96 w-96 rounded-full bg-red-100/70 blur-[100px]"
+  />
+  <div
+    aria-hidden
+    className="pointer-events-none absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-sky-100/70 blur-[110px]"
+  />
+
+  <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-10">
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.75, ease: EASE }}
+      className="relative overflow-hidden border border-neutral-200 bg-white shadow-[0_30px_80px_-48px_rgba(15,23,42,0.35)]"
+    >
+      <span
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-500 via-red-600 to-rose-400"
+      />
+
+      <div className="grid items-center gap-12 px-6 py-14 sm:px-12 sm:py-16 lg:grid-cols-12 lg:gap-16 lg:px-20 lg:py-24">
+        <div className="lg:col-span-7">
+          <span className="inline-flex items-center gap-2 border border-red-100 bg-red-50 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 sm:text-[11px]">
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+            Quality management system
+          </span>
+
+          <h2 className="mt-7 text-4xl font-black leading-[1.05] tracking-tight text-neutral-950 sm:text-5xl lg:text-7xl">
+            ISO{' '}
+            <span className="bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">
+              9001:2015
+            </span>
+          </h2>
+
+          <p className="mt-5 text-lg font-semibold tracking-tight text-neutral-800 sm:text-xl lg:text-2xl">
+            Quality built into every fabrication
+          </p>
+
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-600 sm:text-base sm:leading-7 lg:text-lg lg:leading-8">
+            The provided certificate documentation identifies Saghai Engineering Works and
+            covers the manufacture of fabricated components for heavy engineering and other
+            industrial applications.
+          </p>
+
+          <ul className="mt-9 grid gap-4 sm:grid-cols-2">
+            {[
+              'Certified quality management system',
+              'Fabricated components for heavy engineering',
+            ].map((point) => (
+              <li key={point} className="flex items-start gap-3 text-sm font-medium text-neutral-700">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-600 text-white">
+                  <svg viewBox="0 0 20 20" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M4 10.5l4 4 8-9" />
+                  </svg>
+                </span>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="lg:col-span-5">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 0.92 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+            className="relative mx-auto flex aspect-square w-full max-w-[340px] items-center justify-center lg:max-w-[420px]"
+          >
+            <div aria-hidden className="absolute inset-6 rounded-full bg-red-100/60 blur-3xl" />
+
+            <motion.svg
+              viewBox="0 0 200 200"
+              aria-hidden
+              className="absolute inset-0 h-full w-full"
+              animate={reduce ? undefined : { rotate: 360 }}
+              transition={reduce ? undefined : { duration: 40, ease: 'linear', repeat: Infinity }}
+            >
+              <defs>
+                <path id="iso-ring" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
+              </defs>
+              <circle cx="100" cy="100" r="96" fill="none" stroke="#e5e5e5" strokeWidth="1" strokeDasharray="2 5" />
+              <text className="fill-neutral-500" fontSize="9.5" fontWeight="700" letterSpacing="3.2">
+                <textPath href="#iso-ring">
+                  ISO 9001:2015 • QUALITY MANAGEMENT • SAGHAI ENGINEERING WORKS •
+                </textPath>
+              </text>
+            </motion.svg>
+
+            <div className="relative flex h-[62%] w-[62%] items-center justify-center rounded-full border border-neutral-200 bg-white shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)]">
+              <div className="absolute inset-2 rounded-full border-2 border-dashed border-red-200" />
+              <div className="flex flex-col items-center text-center">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white shadow-lg shadow-red-600/30 sm:h-14 sm:w-14 lg:h-16 lg:w-16">
+                  <BadgeCheck className="h-7 w-7 sm:h-8 sm:w-8 lg:h-9 lg:w-9" aria-hidden="true" />
+                </span>
+                <span className="mt-3 text-[9px] font-bold uppercase tracking-[0.25em] text-neutral-500 lg:text-[10px]">
+                  Certified
+                </span>
+                <span className="text-lg font-black tracking-tight text-neutral-950 sm:text-xl lg:text-2xl">
+                  ISO 9001
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+
+    <motion.div
+      className="mt-6 grid gap-5 sm:grid-cols-3"
+      variants={staggerParent}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '-80px' }}
+    >
+      {[
+        { number: '01', icon: ClipboardCheck, label: 'Quality standard', value: 'ISO 9001:2015' },
+        { number: '02', icon: Building2, label: 'Organization', value: 'Saghai Engineering Works' },
+        { number: '03', icon: Factory, label: 'Industry scope', value: 'Heavy engineering & fabrication' },
+      ].map((item) => (
+        <motion.div
+          key={item.number}
+          variants={staggerChild}
+          whileHover={reduce ? undefined : { y: -5 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+          className="group relative overflow-hidden border border-neutral-200 bg-white p-7 text-left shadow-sm transition-colors hover:border-red-200 lg:p-8"
+        >
+          <span
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-red-600 transition-transform duration-500 group-hover:scale-x-100"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-1 -top-3 font-mono text-6xl font-black text-neutral-100 transition-colors group-hover:text-red-50"
+          >
+            {item.number}
+          </span>
+
+          <span className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-100 text-red-600 transition-colors group-hover:bg-red-600 group-hover:text-white">
+            <item.icon className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <span className="relative mt-6 block text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
+            {item.label}
+          </span>
+          <span className="relative mt-2 block text-base font-bold leading-snug text-neutral-900 lg:text-lg">
+            {item.value}
+          </span>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+</section>
+
+      {/* ========================== 8. WHY ================================ */}
       <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
           <SectionHead label="Our value" title="Why industrial buyers choose Saghai" />
@@ -998,7 +1162,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-     {/* ======================== 8. CUSTOMERS ============================ */}
+     {/* ======================== 9. CUSTOMERS ============================ */}
 <section className="relative overflow-hidden border-b border-neutral-200 bg-neutral-50 py-20 lg:py-28">
   <div
     aria-hidden
@@ -1140,7 +1304,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
     </Reveal>
   </div>
 </section>
-      {/* ========================= 9. PROJECTS ============================ */}
+      {/* ========================= 10. PROJECTS =========================== */}
       <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl space-y-14 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
@@ -1275,7 +1439,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* ====================== 10. PARTNERSHIP =========================== */}
+      {/* ====================== 11. PARTNERSHIP =========================== */}
       <section className="relative overflow-hidden bg-neutral-950 py-20 text-white lg:py-28">
         <div
           aria-hidden
@@ -1372,7 +1536,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* =========================== 11. FAQ ============================== */}
+      {/* =========================== 12. FAQ ============================== */}
       <section className="border-b border-neutral-200 bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
           <SectionHead
@@ -1431,7 +1595,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* ========================= 12. FINAL CTA ========================== */}
+      {/* ========================= 13. FINAL CTA ========================== */}
       <section className="relative overflow-hidden bg-neutral-950 py-24 text-white lg:py-32">
         <div
           aria-hidden
