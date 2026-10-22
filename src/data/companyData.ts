@@ -93,7 +93,10 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'pressure-vessels',
     title: 'Pressure Vessels',
     description: 'Saghai Engineering manufactures pressure vessels for chemical and process plant applications. Share your requirements and drawings to discuss a vessel built for your project.',
-    images:['/pressure vessel.png'],
+    images: [
+      '/pressure vessel.png',
+      '/images/project_pressure_vessel_1791778050554.jpg',
+    ],
     typicalMaterials: [
       'SA516 (chemical storage vessel example)',
       'SS304 (chemical plant vessel example)',
@@ -110,7 +113,13 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'storage-tanks',
     title: 'Storage Tanks',
     description: 'Saghai Engineering manufactures storage tanks for water treatment, water sprinkler and chemical storage applications, including tank and cone structures.',
-    
+    images: [
+      '/storage tank.png',
+      '/water sprinkler tank.png',
+      '/20kl tank and cone.png',
+      '/32kl tank.png',
+      '/Bright Yellow Industrial Tank in Steel Workshop.png',
+    ],
     typicalMaterials: [
       'Mild steel (documented tank examples)',
       'IS2062 E250 (50 KL sprinkler tank example)',
@@ -131,6 +140,10 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'heat-exchangers',
     title: 'Heat Exchangers',
     description: 'Saghai Engineering manufactures heat exchangers for industrial applications. Contact us with your drawings and requirements to discuss your project.',
+    images: [
+      '/images/project_pressure_vessel_1791778050554.jpg',
+      '/pressure vessel.png',
+    ],
     typicalMaterials: [],
     examples: [],
   },
@@ -138,7 +151,16 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'earthmoving-components',
     title: 'Earthmoving Equipment Components',
     description: 'Saghai Engineering fabricates earthmoving equipment components and spares for dozers, motor graders and drilling equipment.',
-    images:['/c-frame for dozer.png'],
+    images: [
+      '/c-frame for dozer.png',
+      '/axle for dozer.png',
+      '/axle for motor graders.png',
+      '/draw bar for motor.png',
+      '/dozer blade.png',
+      '/chassis for drill.png',
+      '/605 dozer.png',
+      '/width mine plough.png',
+    ],
     typicalMaterials: [
       'Mild steel (selected equipment examples)',
       '690QL (track width mine plough example)',
@@ -159,6 +181,15 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'industrial-structures',
     title: 'Industrial Structures & Components',
     description: 'Saghai Engineering manufactures heavy structures and fabricated components for industrial equipment and applications.',
+    images: [
+      '/Welded Steel Industrial Frame Assembly.png',
+      '/Heavy Steel Chassis in Industrial Workshop.png',
+      '/bucket.png',
+      '/gear wheel.png',
+      '/pivot str for marine.png',
+      '/trommel.png',
+      '/lift plate asembly.png',
+    ],
     typicalMaterials: [
       'Mild steel (selected structure examples)',
       'IS2062 E410 (marine pivot structure example)',
@@ -178,6 +209,11 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: 'process-plant-components',
     title: 'Process Plant Components',
     description: 'Saghai Engineering manufactures process plant components for chemical plants, textile industries and other process equipment applications.',
+    images: [
+      '/butterfly valve body.png',
+      '/pressure vessel.png',
+      '/storage tank.png',
+    ],
     typicalMaterials: ['SS304 (chemical plant vessel example)'],
     examples: [
       'Chemical Plant Components',
@@ -191,14 +227,22 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     title: 'Sheet Metal Components',
     description: 'Saghai Engineering manufactures custom sheet metal components to customer drawings and specifications.',
     typicalMaterials: [],
-    images: ['/'],
+    images: [
+      '/hyrdraulic press.png',
+      '/lift plate asembly.png',
+      '/butterfly valve body.png',
+    ],
     examples: [],
   },
   {
     id: 'compression-dished-ends',
     title: 'Compression Dished Ends',
     description: 'Compression dished ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
-    images: ['/pressure%20vessel.png'],
+    images: [
+      '/pressure vessel.png',
+      '/images/project_pressure_vessel_1791778050554.jpg',
+      '/hyrdraulic press.png',
+    ],
     typicalMaterials: [],
     examples: [],
   }
@@ -341,6 +385,7 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     description: 'Heavy-duty chemical storage and reaction vessel manufactured with an integrated jacket for temperature regulation.',
     application: 'Chemical processing plant requiring controlled heating & pressurized containment',
     keySpecs: ['SA516 Material Grade', '~8 Tonnes Fabricated Weight', 'Hydrostatic Tested', 'Precision Flange Alignment'],
+    image: '/pressure vessel.png',
     featured: true
   },
   {
@@ -352,6 +397,7 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     description: 'Large-scale horizontal process vessel engineered and fabricated for a major chemical plant installation.',
     application: 'Chemical plant process line with aggressive medium handling',
     keySpecs: ['2,000 mm Internal Diameter', '9,000 mm Shell Length', '100% Liquid Penetrant Tested', 'Sanitary Internal Weld Finish'],
+    image: '/pressure vessel.png',
     featured: true
   },
   {
@@ -364,6 +410,7 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     description: 'Heavy-duty fabricated axle housing designed to absorb extreme terrain torsion and powertrain loads in heavy bulldozers.',
     application: 'Earthmoving crawler dozer drivetrain assembly',
     keySpecs: ['~3 Tonnes Weight', 'Multi-plate welded structure', 'Strict machining allowances', 'Ultrasonic weld tested'],
+    image: '/axle for dozer.png',
     featured: true
   },
   {
@@ -376,6 +423,7 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     description: 'Large high-tensile drawbar frame manufactured with 22 mm plate forming for grading blade articulation.',
     application: 'Heavy motor grader blade circle mounting mechanism',
     keySpecs: ['22 mm Heavy Steel Plate', '4 Metre Overall Length', '1.5 Tonnes Finished Weight', 'Precision Pivot Geometry'],
+    image: '/draw bar for motor.png',
     featured: true
   },
   {
@@ -387,7 +435,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     dimensions: '28,000 Litre Volumetric Capacity',
     description: 'Heavy-duty mobile water sprinkler tank engineered with internal anti-surge baffle plates for mining haul-road suppression.',
     application: 'Mining haul truck dust suppression & bulk water transport',
-    keySpecs: ['28,000 Litre Capacity', '~9 Tonnes Empty Weight', 'Anti-surge baffle baffles', 'Full hydrostatic leak verification']
+    keySpecs: ['28,000 Litre Capacity', '~9 Tonnes Empty Weight', 'Anti-surge baffle baffles', 'Full hydrostatic leak verification'],
+    image: '/water sprinkler tank.png'
   },
   {
     id: 'water-sprinkler-tank-50kl',
@@ -398,17 +447,20 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     dimensions: '50,000 Litre Heavy Mobile Unit',
     description: 'Massive 50 KL high-capacity sprinkler tank engineered to mount on super-heavy mining haulage trucks.',
     application: 'Open-cast mining dust control and heavy equipment service',
-    keySpecs: ['50 KL (50,000 Litres) Volume', 'IS2062 E250 Steel Grade', '~21 Tonnes Fabricated Weight', 'Corrosion-resistant epoxy liner']
+    keySpecs: ['50 KL (50,000 Litres) Volume', 'IS2062 E250 Steel Grade', '~21 Tonnes Fabricated Weight', 'Corrosion-resistant epoxy liner'],
+    image: '/water sprinkler tank.png'
   },
   {
     id: 'tank-and-cone-structure-20kl',
     title: '20 KL Tank & Cone Structure',
     category: 'Vessels & Tanks',
     material: 'Mild Steel / Carbon Steel',
+    
     dimensions: '20,000 Litre conical bottom tank',
     description: 'Conical bottom tank with integrated structural elevated support frame for gravity discharge slurry and chemical storage.',
     application: 'Process industry sedimentation & fluid discharge',
-    keySpecs: ['20 KL Capacity', 'Steep Discharge Cone', 'Structural Support Legs', 'Full Circumferential Welds']
+    keySpecs: ['20 KL Capacity', 'Steep Discharge Cone', 'Structural Support Legs', 'Full Circumferential Welds'],
+    image: '/20kl tank and cone.png'
   },
   {
     id: 'storage-tank-32kl',
@@ -418,7 +470,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     dimensions: '32,000 Litre Capacity',
     description: 'Stationary industrial storage tank built with reinforcing rings and dished end heads for safe chemical and water reserve.',
     application: 'Industrial utility fluid and process water storage',
-    keySpecs: ['32 KL Volumetric Capacity', 'Compression Dish Ends', 'Manway & Multi-Nozzle Flanges', 'Pressure leak tested']
+    keySpecs: ['32 KL Volumetric Capacity', 'Compression Dish Ends', 'Manway & Multi-Nozzle Flanges', 'Pressure leak tested'],
+    image: '/32kl tank.png'
   },
   {
     id: 'butterfly-valve-body',
@@ -428,7 +481,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     dimensions: '1,200 mm diameter',
     description: 'Precision fabricated and finish-machined large diameter butterfly valve body engineered for high-volume pipeline control.',
     application: 'Water treatment and cooling water circulating lines',
-    keySpecs: ['1,200 mm Internal Diameter', 'Precision Machined Flange Faces', 'Rigid Valve Seat Geometry', 'Hydrostatic Pressure Qualified']
+    keySpecs: ['1,200 mm Internal Diameter', 'Precision Machined Flange Faces', 'Rigid Valve Seat Geometry', 'Hydrostatic Pressure Qualified'],
+    image: '/butterfly valve body.png'
   },
   {
     id: 'drilling-chassis-platform',
@@ -437,7 +491,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'Heavy Structural Steel',
     description: 'Rigid mobile chassis and working platform engineered for heavy rotary blast hole drilling rigs.',
     application: 'Deep well and mining exploration drill rigs',
-    keySpecs: ['Heavy I-Beam & Box Sections', 'Vibration fatigue resistant', 'Integrated outrigger mounts', 'High load capacity']
+    keySpecs: ['Heavy I-Beam & Box Sections', 'Vibration fatigue resistant', 'Integrated outrigger mounts', 'High load capacity'],
+    image: '/chassis for drill.png'
   },
   {
     id: 'foundry-equipment-bucket',
@@ -446,7 +501,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'Heat & Abrasion Resistant Steel',
     description: 'Heavy ladle and charging bucket fabricated to withstand molten metal temperatures and mechanical impact.',
     application: 'Iron and steel foundry charging systems',
-    keySpecs: ['Reinforced Rim Bands', 'Heavy Trunnion Pivot Brackets', 'Thermal Stress Relief', 'Full Penetration Welds']
+    keySpecs: ['Reinforced Rim Bands', 'Heavy Trunnion Pivot Brackets', 'Thermal Stress Relief', 'Full Penetration Welds'],
+    image: '/bucket.png'
   },
   {
     id: 'fabricated-gear-wheel',
@@ -455,7 +511,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'High-Tensile Carbon Steel',
     description: 'Large-diameter fabricated gear blank and rim structure engineered for heavy industrial drive assemblies.',
     application: 'Heavy transmission drives and industrial rotary kilns',
-    keySpecs: ['Heavy Plate Webbing', 'Pre-machining weld normalization', 'Strict run-out tolerance', 'Radiography tested']
+    keySpecs: ['Heavy Plate Webbing', 'Pre-machining weld normalization', 'Strict run-out tolerance', 'Radiography tested'],
+    image: '/gear wheel.png'
   },
   {
     id: 'lift-pallet-assembly',
@@ -464,7 +521,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'Structural Steel',
     description: 'Robust fabricated lifting frame and pallet structure designed for high-tonnage heavy component transfer.',
     application: 'Heavy manufacturing material handling and shopfloor logistics',
-    keySpecs: ['Rated High SWL (Safe Working Load)', 'Certified Lifting Lugs', 'Deflection-resistant design', 'Anti-slip surface finish']
+    keySpecs: ['Rated High SWL (Safe Working Load)', 'Certified Lifting Lugs', 'Deflection-resistant design', 'Anti-slip surface finish'],
+    image: '/lift plate asembly.png'
   },
   {
     id: 'trommel-screen',
@@ -473,7 +531,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'Abrasion Resistant Plate & Mild Steel',
     description: 'Rotary cylindrical trommel screen drum fabricated for material classification and screening.',
     application: 'Mineral processing, quarrying and solid waste sorting',
-    keySpecs: ['Perforated Screen Sections', 'Drive Ring Integration', 'Dynamic Balance Checking', 'Heavy Support Bearings']
+    keySpecs: ['Perforated Screen Sections', 'Drive Ring Integration', 'Dynamic Balance Checking', 'Heavy Support Bearings'],
+    image: '/trommel.png'
   },
   
   {
@@ -483,7 +542,8 @@ export const PROJECTS_EXPERIENCE: ProjectItem[] = [
     material: 'Marine Grade Carbon Steel / Stainless',
     description: 'Heavy structural pivot hinge and mounting housing fabricated for maritime and offshore applications.',
     application: 'Shipboard articulation systems and marine cranes',
-    keySpecs: ['Corrosion Protective Coating', 'Heavy Wall Bushing Housings', 'Ultrasonic Soundness Inspection', 'Tight Machining Tolerances']
+    keySpecs: ['Corrosion Protective Coating', 'Heavy Wall Bushing Housings', 'Ultrasonic Soundness Inspection', 'Tight Machining Tolerances'],
+    image: '/pivot str for marine.png'
   }
 ];
 

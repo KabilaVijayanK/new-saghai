@@ -21,7 +21,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   ChevronDown,
-  Maximize2,
   Phone,
   Mail,
   Flame,
@@ -66,12 +65,6 @@ const PRODUCT_IMAGES: Record<string, string> = {
   'compression-dished-ends': '/images/dished-ends.jpg',
 };
 
-const PROJECT_IMAGES: Record<string, string> = {
-  'dozer-axle-housing': '/images/dozer-axle.jpg',
-  'motor-grader-drawbar': '/images/drawbar.jpg',
-  'water-sprinkler-28kl': '/images/sprinkler-28kl.jpg',
-  'water-sprinkler-50kl': '/images/sprinkler-50kl.jpg',
-};
 // Add real customers ONLY with their permission. Logo wall stays hidden while empty.
 const CUSTOMERS: { name: string; logo?: string }[] = [
   // { name: 'Customer Name', logo: '/images/customers/customer-name.svg' },
@@ -1222,50 +1215,58 @@ export const HomeView: React.FC<HomeViewProps> = ({
             whileInView="show"
             viewport={{ once: true, margin: '-80px' }}
           >
-            {homeFeaturedProjects.slice(1, 4).map((item) => {
-              const image =
-                (item as ProjectItem & { image?: string }).image ?? PROJECT_IMAGES[item.id];
+            {homeFeaturedProjects.slice(1, 4).map((item, index) => {
               return (
                 <motion.button
                   key={item.id}
                   variants={staggerChild}
                   onClick={() => onSelectProject(item)}
-                  className="group flex flex-col overflow-hidden border border-neutral-200 bg-white text-left transition-all duration-500 hover:-translate-y-1.5 hover:border-red-600 hover:shadow-[0_28px_50px_-28px_rgba(0,0,0,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600"
+                  className="group flex h-full w-full flex-col overflow-hidden border border-neutral-200 bg-white text-left shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-neutral-400 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                 >
                   {/* Image */}
-                  <div className="relative h-56">
-                    <SmartImage src={image} alt={item.title} className="absolute inset-0" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-transparent to-transparent" />
-                    <span className="absolute left-3 top-3 bg-white px-3 py-1 text-xs font-semibold text-neutral-900">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-200">
+                    <SmartImage
+                      src={item.image}
+                      alt={item.title}
+                      className="absolute inset-0 h-full w-full"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/75 via-neutral-950/5 to-transparent" />
+                    <span className="absolute left-4 top-4 max-w-[75%] truncate bg-white/95 px-3 py-1.5 text-xs font-semibold text-neutral-900 shadow-sm">
                       {item.category}
                     </span>
-                    <span className="absolute bottom-3 left-3 flex translate-y-3 items-center gap-2 text-sm font-semibold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      <Maximize2 className="h-4 w-4" /> View specifications
+                    <span className="absolute right-4 top-4 font-mono text-xs font-semibold text-white/90">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3 text-sm font-semibold text-white">
+                      <span>Project details</span>
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/50 bg-black/20 transition-colors group-hover:bg-red-600 group-hover:border-red-600">
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
                     </span>
                   </div>
 
                   {/* Text */}
-                  <div className="flex flex-1 flex-col justify-between p-6">
-                    <div className="space-y-3">
-                      <h3 className="text-xl font-bold text-neutral-900 transition-colors group-hover:text-red-600">
+                  <div className="flex flex-1 flex-col p-5 sm:p-6">
+                    <div>
+                      <h3 className="min-h-[3.5rem] text-xl font-bold leading-snug text-neutral-900 transition-colors group-hover:text-red-600">
                         {item.title}
                       </h3>
-                      <p className="line-clamp-3 text-base leading-relaxed text-neutral-600">
+                      <p className="mt-2 min-h-[4.5rem] line-clamp-3 text-sm leading-6 text-neutral-600">
                         {item.description}
                       </p>
                     </div>
-                    <div className="mt-5 space-y-1.5 border-t border-neutral-100 pt-4 text-sm">
-                      <div className="flex justify-between gap-4">
-                        <span className="text-neutral-500">Material</span>
-                        <span className="text-right font-semibold text-neutral-800">{item.material}</span>
+                    <dl className="mt-5 space-y-2 border-t border-neutral-200 pt-4 text-sm">
+                      <div className="flex items-start justify-between gap-4">
+                        <dt className="shrink-0 text-neutral-500">Material</dt>
+                        <dd className="text-right font-semibold leading-5 text-neutral-900">{item.material}</dd>
                       </div>
                       {item.weight && (
-                        <div className="flex justify-between gap-4">
-                          <span className="text-neutral-500">Weight</span>
-                          <span className="text-right font-semibold text-neutral-800">{item.weight}</span>
+                        <div className="flex items-start justify-between gap-4">
+                          <dt className="shrink-0 text-neutral-500">Weight</dt>
+                          <dd className="text-right font-semibold leading-5 text-neutral-900">{item.weight}</dd>
                         </div>
                       )}
-                    </div>
+                    </dl>
                   </div>
                 </motion.button>
               );

@@ -60,6 +60,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const others = categories.filter((c) => c.id !== product.id).slice(0, 3);
 
   const [[index, direction], setPage] = useState<[number, number]>([0, 0]);
+  const [imageAspectRatio, setImageAspectRatio] = useState(16 / 9);
   const [lightbox, setLightbox] = useState(false);
 
   // reset + scroll to top when the product changes
@@ -209,7 +210,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:px-8">
           {/* ---------- GALLERY ---------- */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <div className="group relative aspect-[4/3] w-full overflow-hidden border border-neutral-200 bg-neutral-200 shadow-[0_30px_60px_-35px_rgba(0,0,0,0.4)]">
+            <div
+              className="group relative aspect-video w-full overflow-hidden border border-neutral-200 bg-neutral-100 shadow-[0_30px_60px_-35px_rgba(0,0,0,0.4)]"
+              style={{ aspectRatio: imageAspectRatio }}
+            >
               <AnimatePresence initial={false} custom={direction} mode="popLayout">
                 <motion.div
                   key={index}
@@ -233,12 +237,16 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                     alt={`${product.title} - photo ${index + 1}`}
                     loading="eager"
                     draggable={false}
-                    className="h-full w-full object-cover"
+                    onLoad={(event) => {
+                      const { naturalWidth, naturalHeight } = event.currentTarget;
+                      if (naturalWidth > 0 && naturalHeight > 0) {
+                        setImageAspectRatio(naturalWidth / naturalHeight);
+                      }
+                    }}
+                    className="h-full w-full object-contain"
                   />
                 </motion.div>
               </AnimatePresence>
-
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent" />
 
               {/* counter */}
               <span className="absolute left-0 top-5 bg-red-600 px-3 py-1.5 text-sm font-bold tabular-nums text-white">

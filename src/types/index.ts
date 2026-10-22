@@ -18,6 +18,7 @@ export interface ProjectItem {
   description: string;
   application: string;
   keySpecs: string[];
+  image?: string;
   featured?: boolean;
 }
 
