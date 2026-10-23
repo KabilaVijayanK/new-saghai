@@ -115,10 +115,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     description: 'Saghai Engineering manufactures storage tanks for water treatment, water sprinkler and chemical storage applications, including tank and cone structures.',
     images: [
       '/storage tank.png',
-      '/water sprinkler tank.png',
-      '/20kl tank and cone.png',
-      '/32kl tank.png',
-      '/Bright Yellow Industrial Tank in Steel Workshop.png',
+      '/storage tank 2.png',
     ],
     typicalMaterials: [
       'Mild steel (documented tank examples)',
