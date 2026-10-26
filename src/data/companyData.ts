@@ -581,13 +581,13 @@ export const LEADERSHIP_TEAM = [
   {
     name: 'Maria Irudayaraj',
     role: 'Founder & CEO',
-    bio: 'Maria Irudayaraj founded Saghai Engineering in 1978 and brings more than five decades of experience in metal fabrication. His hands-on manufacturing knowledge and long-term industry experience form an important part of the company\'s foundation.',
+    bio: 'In 1978, Maria Irudayaraj started Saghai Engineering with a clear mission: to fill a vital need for uncompromising quality, hands-on craftsmanship, and reliable custom metal fabrication. Driven by a passion for technical precision, he steadily grew the factory into a trusted industry name. Backed by over five decades of expertise, he remains widely respected for his sharp technical insight and foundational leadership.',
     experience: '50+ Years Practical Metal Fabrication'
   },
   {
     name: 'Daniel Irudayaraj',
     role: 'Director',
-    bio: 'Daniel Irudayaraj joined the family business in 2023, bringing experience from Automotive Tier-1 suppliers in Detroit, Michigan, including supplier development and commodity management. His global exposure adds a strategic perspective to the company\'s continued development.',
+    bio: 'Daniel Irudayaraj joined the family business in 2023 to continue the founder\'s legacy and vision, taking the company into its next phase of growth. Bringing significant global experience from the automotive industry in Detroit, Michigan, and having held key operational roles, he introduces a modern, strategic perspective. His international exposure, combined with the founder’s manufacturing depth, is helping drive Saghai Engineering to new heights and expanded capabilities.',
     experience: 'Automotive Tier-1 Detroit, Michigan (Supplier Development & Commodity Management)'
   }
 ];
