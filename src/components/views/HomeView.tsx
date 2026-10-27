@@ -769,13 +769,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {
                 tag: 'Forming',
                 range: '3 – 100 mm',
-                title: 'Industrial plate bending',
-                text: 'Controlled plate bending for fabricated components that need accurate geometry and forming, from 3–100 mm current customer-confirmed capability.',
+                title: 'Bending & Rolling Services',
+                text: 'Precision forming capabilities for heavy structural components, cylindrical shells, and custom-engineered fabrications.',
                 img: BENDING_IMG,
                 alt: 'Industrial plate bending 3–100 mm at Saghai Engineering',
                 points: [
-                  'Customer-confirmed bending capability from 3 mm to 100 mm',
-                  'Cylindrical shell rolling and heavy structural section bending',
+                  'Plate Bending: 25 mm thick × 4500 mm length',
+                  'Rolling: 16 mm thick × 2000 mm length',
                 ],
                 cta: 'Request plate bending quote',
                 rfq: 'Plate Bending',

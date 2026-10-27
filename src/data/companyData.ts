@@ -95,7 +95,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     description: 'Saghai Engineering manufactures pressure vessels for chemical and process plant applications. Share your requirements and drawings to discuss a vessel built for your project.',
     images: [
       '/pressure vessel.png',
-      '/images/project_pressure_vessel_1791778050554.jpg',
+      '/32kl tank.png',
+      '/20kl tank and cone.png',
+      // '/images/project_pressure_vessel_1791778050554.jpg',
     ],
     typicalMaterials: [
       'SA516 (chemical storage vessel example)',
@@ -116,6 +118,9 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     images: [
       '/storage tank.png',
       '/storage tank 2.png',
+      '/20kl tank and cone.png',
+      '/32kl tank.png',
+      '/50l tank.png',
     ],
     typicalMaterials: [
       'Mild steel (documented tank examples)',
@@ -133,17 +138,17 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
       'Furnace Tank with Conveyor',
     ],
   },
-  {
-    id: 'heat-exchangers',
-    title: 'Heat Exchangers',
-    description: 'Saghai Engineering manufactures heat exchangers for industrial applications. Contact us with your drawings and requirements to discuss your project.',
-    images: [
-      '/images/project_pressure_vessel_1791778050554.jpg',
-      '/pressure vessel.png',
-    ],
-    typicalMaterials: [],
-    examples: [],
-  },
+  // {
+  //   id: 'heat-exchangers',
+  //   title: 'Heat Exchangers',
+  //   description: 'Saghai Engineering manufactures heat exchangers for industrial applications. Contact us with your drawings and requirements to discuss your project.',
+  //   images: [
+  //     '/images/project_pressure_vessel_1791778050554.jpg',
+  //     '/pressure vessel.png',
+  //   ],
+  //   typicalMaterials: [],
+  //   examples: [],
+  // },
   {
     id: 'earthmoving-components',
     title: 'Earthmoving Equipment Components',
@@ -153,14 +158,15 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
       '/axle for dozer.png',
       '/axle for motor graders.png',
       '/draw bar for motor.png',
+      '/50l tank.png',
       '/dozer blade.png',
       '/chassis for drill.png',
       '/605 dozer.png',
       '/width mine plough.png',
     ],
     typicalMaterials: [
-      'Mild steel (selected equipment examples)',
-      '690QL (track width mine plough example)',
+      'Materials - E250, E410, S690QL, SA516, Hardox450, S355NL',
+      
     ],
     examples: [
       'Dozer Axle Housing',
@@ -204,14 +210,13 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   },
   {
     id: 'process-plant-components',
-    title: 'Process Plant Components',
-    description: 'Saghai Engineering manufactures process plant components for chemical plants, textile industries and other process equipment applications.',
+    title: 'Fabricated Butterfly Valve  Body and Vane',
+    description: 'Saghai Engineering manufactures process  plant components including fabricated butterfly valve bodies, vanes, and other custom process equipment parts.',
     images: [
       '/butterfly valve body.png',
-      '/pressure vessel.png',
-      '/storage tank.png',
+      '/vane.png',
     ],
-    typicalMaterials: ['SS304 (chemical plant vessel example)'],
+    typicalMaterials: ['SS316, SS304, E250, SA516'],
     examples: [
       'Chemical Plant Components',
       'Textile Industry Components',
@@ -225,20 +230,20 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
     description: 'Saghai Engineering manufactures custom sheet metal components to customer drawings and specifications.',
     typicalMaterials: [],
     images: [
-      '/hyrdraulic press.png',
-      '/lift plate asembly.png',
-      '/butterfly valve body.png',
+      '/sheet metal 1.png',
+      '/sheet metal 2.png',
+      '/sheet metal 3.png',
+      '/sheet metal 4.png',
     ],
     examples: [],
   },
   {
     id: 'compression-dished-ends',
-    title: 'Compression Dished Ends',
-    description: 'Compression dished ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
+    title: 'Dished Ends',
+    description: 'Dished ends, also known as dished ends, are formed end components for pressure vessels, storage tanks and industrial equipment.',
     images: [
-      '/pressure vessel.png',
-      '/images/project_pressure_vessel_1791778050554.jpg',
-      '/hyrdraulic press.png',
+      '/dieshed ends 1.png',
+      '/dieshed ends 2.png',
     ],
     typicalMaterials: [],
     examples: [],
