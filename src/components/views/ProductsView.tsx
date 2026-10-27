@@ -330,11 +330,11 @@ export const ProductsView: React.FC<ProductsViewProps> = ({ onOpenRFQ, onSelectP
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
             <a
-              href="tel:+919585953545"
+              href="tel:+919944433052"
               className="inline-flex items-center justify-center gap-2 border border-white/30 px-8 py-4 text-base font-bold text-white transition-colors hover:border-white hover:bg-white/10"
             >
               <Phone className="h-5 w-5 text-red-400" />
-              +91 95859 53545
+              +91 99444 33052
             </a>
           </div>
         </motion.div>

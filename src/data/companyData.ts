@@ -8,8 +8,8 @@ export const COMPANY_INFO = {
   coveredArea: '30,000+ Sq. Ft.',
   fabricationBays: '3 Bays',
   location: '540/1 Vellakinar, Coimbatore – 641029, Tamil Nadu, India',
-  phone: '+91 95859 53545',
-  email: 'Saghaiengg1978@gmail.com',
+  phone: '+91 99444 33052',
+  email: 'info@saghaiengg.com',
   workingHours: 'Mon – Sat: 8:30 AM – 6:30 PM IST',
 };
 

@@ -1639,13 +1639,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <Reveal delay={0.3}>
             <div className="flex flex-col items-center justify-center gap-3 border-t border-white/10 pt-8 text-base text-neutral-300 sm:flex-row sm:gap-8">
               <span className="text-neutral-400">Coimbatore facility</span>
-              <a href="tel:+919585953545" className="inline-flex items-center gap-2 hover:text-white">
+              <a href="tel:+919944433052" className="inline-flex items-center gap-2 hover:text-white">
                 <Phone className="h-4 w-4 text-red-400" />
-                +91 95859 53545
+                +91 99444 33052
               </a>
-              <a href="mailto:Saghaiengg1978@gmail.com" className="inline-flex items-center gap-2 hover:text-white">
+              <a href="mailto:info@saghaiengg.com" className="inline-flex items-center gap-2 hover:text-white">
                 <Mail className="h-4 w-4 text-red-400" />
-                Saghaiengg1978@gmail.com
+                info@saghaiengg.com
               </a>
             </div>
           </Reveal>
