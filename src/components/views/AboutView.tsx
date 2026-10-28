@@ -73,16 +73,20 @@ const FACILITY = [
 
 const MATERIALS = [
   {
-    name: 'Mild Steel',
-    grades: ['IS2062', 'SA516'],
+    name: 'Carbon Steels',
+    grades: ['IS2062: E250 Gr. A / B / C', 'SA516 Gr. 60 / 70 Plates'],
     text: 'Heavy plates, structural sections, carbon steel and pressure-vessel grade plates.',
   },
   {
-    name: 'Stainless Steel',
-    grades: ['SS304', 'SS316'],
-    text: 'Process vessel grades requiring hygienic passivated weld seams and corrosion resistance.',
+    name: 'High Strength & Wear Plates',
+    grades: ['S355J / S410J High Strength Steel', 'S690QL / S700MC', 'Hardox 400 / 450 Wear Plates'],
+    text: 'High-strength and wear-resistant steel plates for demanding industrial and heavy-duty applications.',
   },
-  
+  {
+    name: 'Stainless Steels',
+    grades: ['SA240 Gr. 304 / 316 / 310 / 410'],
+    text: 'Stainless steel grades for corrosion-resistant pressure vessels, process equipment and industrial applications.',
+  },
 ];
 
 const QUALITY = [
@@ -326,28 +330,31 @@ export const AboutView: React.FC<AboutViewProps> = ({ onOpenRFQ }) => {
       title="Working across common industrial materials"
       text="Our documented manufacturing experience covers standard materials used in process equipment and industrial fabrication."
     />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-      {MATERIALS.map((m) => (
-        <div
-          key={m.name}
-          className="relative border border-neutral-200 p-8 space-y-4 text-center hover:border-red-600 hover:shadow-lg transition-all overflow-hidden group"
-        >
-          <div className="absolute top-0 left-0 h-1 w-0 bg-red-600 group-hover:w-full transition-all duration-300" />
-          <h3 className="text-2xl font-bold text-neutral-900">{m.name}</h3>
-          <div className="flex flex-wrap justify-center gap-2">
-            {m.grades.map((g) => (
-              <span
-                key={g}
-                className="px-2.5 py-1 bg-neutral-100 text-[11px] font-mono font-semibold text-neutral-700"
-              >
-                {g}
-              </span>
-            ))}
-          </div>
-          <p className="text-sm text-neutral-600 leading-relaxed">{m.text}</p>
-        </div>
-      ))}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+  {MATERIALS.map((m) => (
+    <div
+      key={m.name}
+      className="relative border border-neutral-200 p-8 space-y-4 text-center hover:border-red-600 hover:shadow-lg transition-all overflow-hidden group"
+    >
+      <div className="absolute top-0 left-0 h-1 w-0 bg-red-600 group-hover:w-full transition-all duration-300" />
+
+      <h3 className="text-2xl font-bold text-neutral-900">{m.name}</h3>
+
+      <div className="flex flex-wrap justify-center gap-2">
+        {m.grades.map((g) => (
+          <span
+            key={g}
+            className="px-2.5 py-1 bg-neutral-100 text-[11px] font-mono font-semibold text-neutral-700"
+          >
+            {g}
+          </span>
+        ))}
+      </div>
+
+      <p className="text-sm text-neutral-600 leading-relaxed">{m.text}</p>
     </div>
+  ))}
+</div>
   </div>
 </section>
 
